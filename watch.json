@@ -17,5 +17,5 @@
       "^frontend/static/"
     ]
   },
-  "throttle": 100
+  "throttle": 1000
 }
