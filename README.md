@@ -7,7 +7,7 @@ Simple starter for Flask and React base apps.
 `npm` is used to build both the backend (Python 3/Flask) and frontend (React/Javascript) code, specifically:
 
 * `.requirements.txt` where Python dependencies are managed
-* `.start.sh` (copied from [https://glitch.com/~python3](https://glitch.com/~python3)) runs Pip against the `.requirements.txt` if needed before starting Flask app&mdash;called from `packag
+* `.start.sh` runs Pip against the `.requirements.txt` if needed before starting Flask app&mdash;called from `npm start`
 * `package.json` where Javascript dependencies are managed
 * `webpack.config.js` config for webpack to build frontend React part
 * after frontend React part is built, it is dumped into `dist/` folder for Flask backend to pick up

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#
+# I really like how 
 # copied from https://glitch.com/~python3
 #
 MD5=$(md5sum .requirements.txt | cut -f1 -d' ')
