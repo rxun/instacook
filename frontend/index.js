@@ -10,9 +10,10 @@ function AddRow() {
     e.preventDefault();
     console.log('Add row.');
   }
-  <button onClick={handleClick}>
+  
+  return (<button onClick={handleClick}>
     Add Row
-  </button>
+  </button>)
 }
 
 ReactDOM.render(<App/>, document.getElementById('app'));
