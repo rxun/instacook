@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "backend"
+packages = [
+    { include = "src" },
+]
+version = "0.1.0"
+description = ""
+authors = ["kenetec <klhester3@gmail.com>"]
+
+[tool.poetry.scripts]
+start = "scripts:runserver"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Flask = "^1.1.2"
+Flask-Script = "^2.0.6"
+Flask-Cors = "^3.0.10"
+
+[tool.poetry.dev-dependencies]
+black = "^20.8b1"
+pylint = "^2.7.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
