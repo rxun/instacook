@@ -79,20 +79,3 @@ def delete_recipe():
 
     return create_response()
 
-
-@recipes.route('/most-liked', methods=['GET'])
-def get_most_liked():
-    conn = db.connect()
-    query_results = conn.execute('''
-    SELECT recipeLikes.recipe_id, recipeLikes.ingredient_id, COUNT(recipeLikes.like_id) AS likeCount, i.name
-    FROM (SELECT l.like_id, p.recipe_id, rc.ingredient_id
-    FROM Likes l JOIN Post p ON l.post_id = p.post_id LEFT JOIN RecipeContains rc ON p.recipe_id = rc.recipe_id) AS recipeLikes JOIN Ingredient i ON recipeLikes.ingredient_id = i.ingredient_id
-    GROUP BY recipeLikes.ingredient_id, recipeLikes.recipe_id
-    ORDER BY likeCount DESC
-    LIMIT 15;
-    ''').fetchall()
-
-    conn.close()
-
-    results = [dict(obj) for obj in query_results]
-    return create_response(data={'result': results})

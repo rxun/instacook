@@ -50,9 +50,6 @@ export const deleteRecipe = async (recipe_id) =>
 export const getRecipesOnKeyword = async (keyword) =>
   await get("/recipes", { keyword });
 
-export const getMostLikedIngredientsByRecipe = async () =>
-  await get("/recipes/most-liked").then((res) => res.result.result)
-
 export const getIngredients = async () =>
   await get("/ingredients/").then((res) => res.result.result);
 
@@ -75,6 +72,9 @@ export const getIngredientByName = async (name) =>
 
 export const getIngredientByType = async (type) =>
   await get("/ingredients/", { type }).then((res) => res.result.result);
+
+export const getMostLikedIngredientsByRecipe = async () =>
+  await get("/ingredients/most-liked").then((res) => res.result.result);
 
 export const login = async (accountInfo) =>
   instance.post(`${API_URL}/account/login`, accountInfo).catch(console.error);
