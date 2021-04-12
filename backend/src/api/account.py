@@ -5,7 +5,7 @@ from src import db
 account = Blueprint("account", __name__)
 
 
-@account.route('/login', methods=['GET'])
+@account.route('/login', methods=['POST'])
 def login():
     req = request.get_json()
 
