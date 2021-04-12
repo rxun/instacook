@@ -30,6 +30,30 @@ const del = async (url, params) =>
     .then((res) => res && res.data)
     .catch((err) => console.error(err));
 
+
+export const feed = async (accountInfo) =>
+  instance.get(`${API_URL}/post/feed`, accountInfo).catch(console.error);
+
+export const createPost = async (title, picture, description, account_id) =>
+  await post("/post/", {title, picture, description, account_id} );
+
+export const getPosts = async () => 
+  await get("/post/").then((res) => res.result.result);
+
+export const getPostsOnKeyword = async (keyword) => 
+  await get("/post", { keyword }).then(res => res.result.result);
+
+export const getFewestStepsPosts = async () =>
+  await get("/post/fewest").then((res) => res.result.result);
+
+export const getPost = async (post_id) => 
+  await get(`/post/${post_id}`).then((res) => res.result.result);
+
+export const updatePost = async (post_id, title, picture, description) =>
+  await put("/post/", { post_id, title, picture, description });
+
+export const deletePost = async (post_id) =>
+  await del("/post/", {post_id});
 /**
  * API START
  * */
@@ -97,6 +121,7 @@ export const deleteAccount = async (usernameInfo) =>
   instance
     .post(`${API_URL}/account/delete-account`, usernameInfo)
     .catch(console.error);
+
 
 export const getTopLikers = async (count) =>
   instance

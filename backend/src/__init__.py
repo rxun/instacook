@@ -80,7 +80,8 @@ def create_app():
         comment,
         recipes,
         ingredients,
-        recipe_contains
+        recipe_contains,
+        post
     )
 
     app.register_blueprint(recipes.recipes, url_prefix='/api/recipes')
@@ -90,6 +91,7 @@ def create_app():
                            url_prefix='/api/recipe_contains')
     app.register_blueprint(account.account, url_prefix='/api/account')
     app.register_blueprint(comment.comment, url_prefix='/api/comment')
+    app.register_blueprint(post.post, url_prefix='/api/post')
 
     # register error handlers
     @app.errorhandler(404)

@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+import Feed from "./pages/Feed";
+import CreatePost from "./pages/CreatePost";
 import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
 import CreateRecipe from "./pages/CreateRecipe";
@@ -15,6 +17,7 @@ const App = () => (
     <Router>
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/feed" component={Feed} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/createaccount" component={CreateAccount} />
         <Route exact path="/create-recipe" component={CreateRecipe} />
