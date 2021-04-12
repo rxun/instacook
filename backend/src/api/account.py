@@ -51,3 +51,29 @@ def search_username():
     if len(query_results):
         return create_response(message="Username taken")
     return create_response(message="Username available")
+
+@account.route('/update-username', methods=['POST'])
+def update_username():
+    req = request.get_json()
+    print(req)
+    try:
+        conn = db.connect()
+        query = 'UPDATE Account SET username="{}" WHERE username="{}";'.format(req['newUsername'], req['oldUsername'])
+        conn.execute(query)
+        conn.close()
+        return create_response(status=200)
+    except:
+        return create_response(status=400)
+
+@account.route('/delete-account', methods=['POST'])
+def delete_account():
+    req = request.get_json()
+
+    try:
+        conn = db.connect()
+        query = 'DELETE FROM Account WHERE username="{}";'.format(req['username'])
+        conn.execute(query)
+        conn.close()
+        return create_response(status=200)
+    except:
+        return create_response(status=400)
