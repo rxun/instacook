@@ -32,8 +32,12 @@ const Home = (props) => {
   const handleUserSearch = async (e) => {
     e.preventDefault();
     const res = await getUser(searchUsername);
-    const user = res.data.result;
-    setSearchUsernameData(user);
+    const users = res.data.result;
+    let data = [];
+    for (const key in users) {
+      data.push(users[key]);
+    }
+    setSearchUsernameData(data);
   };
 
   return (
@@ -70,24 +74,29 @@ const Home = (props) => {
       <br />
       <form onSubmit={handleUserSearch}>
         <label>
-          Search By Username:
+          Search By Keyword In Username:
           <input
             type="text"
             onChange={(e) => setSearchUsername(e.target.value)}
           />
         </label>
-        <input type="submit" value="View User" />
+        <input type="submit" value="View Users" />
       </form>
       {searchUsernameData && (
         <div>
-          <h3>Username Search Result:</h3>
-          <p>Username: {searchUsernameData.username}</p>
-          <p>Email: {searchUsernameData.email}</p>
+          <h3>Username Keyword Search Result:</h3>
+          <p>Username | Email</p>
         </div>
       )}
+      {searchUsernameData &&
+        searchUsernameData.map((u) => (
+          <div>
+            {u.username} | {u.email}
+          </div>
+        ))}
       <br />
       <br />
-      <div style={{ paddingLeft: "1em", overflowY: 'scroll', height: '20em' }}>
+      <div style={{ paddingLeft: "1em", overflowY: "scroll", height: "20em" }}>
         <h3>Top commentors</h3>
         {topCommentors &&
           topCommentors.map((user) => (
