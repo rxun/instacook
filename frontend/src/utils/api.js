@@ -34,14 +34,17 @@ const del = async (url, params) =>
 export const feed = async (accountInfo) =>
   instance.get(`${API_URL}/post/feed`, accountInfo).catch(console.error);
 
-export const createPost = async (accountInfo) =>
-  instance.post(`${API_URL}/post/create`, accountInfo, ).catch(console.error);
+export const createPost = async (title, picture, description, account_id) =>
+  await post("/post/", {title, picture, description, account_id} );
 
-export const getPosts = async () => await get("/post/").then((res) => res.result.result);
+export const getPosts = async () => 
+  await get("/post/").then((res) => res.result.result);
 
-export const getPostsOnKeyword = async (keyword) => await get("/recipes", { keyword });
+export const getPostsOnKeyword = async (keyword) => 
+  await get("/recipes", { keyword });
 
-export const getPost = async (post_id) => await get(`/post/${post_id}`).then((res) => res.result.result);
+export const getPost = async (post_id) => 
+  await get(`/post/${post_id}`).then((res) => res.result.result);
 
 export const updatePost = async (post_id, title, picture, description) =>
   await put("/post/", { post_id, title, picture, description });

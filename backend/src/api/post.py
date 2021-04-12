@@ -20,20 +20,27 @@ def feed():
     except:
         return create_response(status=401)
 
-@post.route('/create', methods=['POST'])
+@post.route('/', methods=['POST'])
 def create_post():
-    req = request.get_json()
+    data = request.json
+    print(data)
 
     try:
         conn = db.connect()
+        title = data.get('title')
+        picture = data.get('picture')
+        description = data.get('description')
+        account_id = data.get('account_id')
+
         query = 'SELECT MAX(post_id) FROM Post;'
         query_results = conn.execute(query).fetchall()
+        new_post_id = 0
         for result in query_results:
-            post_id = result[0] + 1 
-        query = 'INSERT INTO Post (post_id, title, picture, description, account_id) VALUES ("{}", "{}", "{}", "{}", "{}");'.format(post_id, req['title'], req['picture'], req['description'], req['account_id'])
+            new_post_id = result[0] + 1 
+        query = 'INSERT INTO Post (post_id, title, picture, description, account_id) VALUES ("{}", "{}", "{}", "{}", "{}");'.format(new_post_id, title, picture, description, account_id)
         conn.execute(query)
         conn.close()
-        return create_response(status=200)
+        return create_response(data={'post_id':new_post_id})
     except:
         return create_response(status=400)
 
