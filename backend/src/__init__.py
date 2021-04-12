@@ -1,10 +1,31 @@
 import logging
+import sqlalchemy
 
 from flask import Flask, request
 from flask_cors import CORS
 
 from src.core import all_exception_handler
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Referenced from PT1 Workshop 3
+def init_connection_engine():
+    pool = sqlalchemy.create_engine(
+        sqlalchemy.engine.url.URL(
+            drivername="mysql+pymysql",
+            username=os.environ.get('MYSQL_USER'),
+            password=os.environ.get('MYSQL_PASSWORD'),
+            database=os.environ.get('MYSQL_DB'),
+            host=os.environ.get('MYSQL_HOST')
+        )
+    )
+
+    return pool
+
+db = init_connection_engine()
 
 class RequestFormatter(logging.Formatter):
     def format(self, record):
@@ -47,8 +68,6 @@ def create_app():
 
     root = logging.getLogger("core")
     root.addHandler(strm)
-
-    # import db
 
     # import and register blueprints
     from src.api import (
