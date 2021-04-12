@@ -20,6 +20,7 @@ import {
   getRecipe,
   createRecipe,
   getRecipesOnKeyword,
+  getMostLikedIngredientsByRecipe,
 } from "../utils/api";
 
 const CRUD_OPTIONS = {
@@ -48,7 +49,7 @@ const CreateRecipe = () => {
   const [success, setSuccess] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [keywordRecipes, setKeywordRecipes] = useState([]);
-
+  
   const onCRUDSubmit = async () => {
     let res;
 
@@ -166,7 +167,10 @@ const CreateRecipe = () => {
         <div>
           <h2>Recipe List</h2>
           <div className="recipe-list">
-            {keywordRecipes && keywordRecipes.map((recipe) => <RecipeCard recipe={recipe} length={100} />)}
+            {keywordRecipes &&
+              keywordRecipes.map((recipe) => (
+                <RecipeCard recipe={recipe} length={100} />
+              ))}
           </div>
         </div>
       )}

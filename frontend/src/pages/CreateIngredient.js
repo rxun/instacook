@@ -18,6 +18,7 @@ import {
   deleteIngredient,
   getIngredientById,
   getIngredientByName,
+  getMostLikedIngredientsByRecipe,
   updateIngredient,
 } from "../utils/api";
 
@@ -50,6 +51,20 @@ const CreateIngredient = () => {
   const [success, setSuccess] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [keywordIngredients, setKeywordIngredients] = useState([]);
+  const [
+    mostLikedIngredients,
+    setMostLikedIngredients,
+  ] = useState();
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getMostLikedIngredientsByRecipe();
+      console.log(res);
+      setMostLikedIngredients(res);
+    }
+
+    fetchData();
+  }, []);
 
   const onCRUDSubmit = async () => {
     let res;
@@ -185,10 +200,22 @@ const CreateIngredient = () => {
 
       {keywordIngredients && keywordIngredients.length > 0 && (
         <div>
-          <h2>Ingreident List</h2>
+          <h2>Ingredient List</h2>
           <div className="recipe-list">
             {keywordIngredients &&
               keywordIngredients.map((ingredient) => (
+                <IngredientCard ingredient={ingredient} />
+              ))}
+          </div>
+        </div>
+      )}
+
+      {mostLikedIngredients && mostLikedIngredients.length > 0 && (
+        <div>
+          <h2>Most Liked Ingredients</h2>
+          <div className="recipe-list">
+            {mostLikedIngredients &&
+              mostLikedIngredients.map((ingredient) => (
                 <IngredientCard ingredient={ingredient} />
               ))}
           </div>

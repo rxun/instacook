@@ -50,6 +50,9 @@ export const deleteRecipe = async (recipe_id) =>
 export const getRecipesOnKeyword = async (keyword) =>
   await get("/recipes", { keyword });
 
+export const getMostLikedIngredientsByRecipe = async () =>
+  await get("/recipes/most-liked").then((res) => res.result.result)
+
 export const getIngredients = async () =>
   await get("/ingredients/").then((res) => res.result.result);
 
