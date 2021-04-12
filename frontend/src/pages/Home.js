@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { getTopLikers } from "../utils/api";
+import { getTopLikers, getUser } from "../utils/api";
 
 const Home = (props) => {
   const currentUsername = props.history.location.state?.username;
   const [topLikersCount, setTopLikersCount] = useState(0);
   const [topLikersData, setTopLikersData] = useState(null);
+  const [searchUsername, setSearchUsername] = useState("");
+  const [searchUsernameData, setSearchUsernameData] = useState(null);
 
   const handleTopLikersSubmit = async (e) => {
     e.preventDefault();
@@ -16,6 +18,13 @@ const Home = (props) => {
       data.push(accounts[key]);
     }
     setTopLikersData(data);
+  };
+
+  const handleUserSearch = async (e) => {
+    e.preventDefault();
+    const res = await getUser(searchUsername);
+    const user = res.data.result;
+    setSearchUsernameData(user);
   };
 
   return (
@@ -36,14 +45,37 @@ const Home = (props) => {
         </label>
         <input type="submit" value="View Top Likers" />
       </form>
-      <br />
-      {topLikersData && <p>Rank | Username | Email</p>}
+      {topLikersData && (
+        <div>
+          <h3>Top {topLikersCount} Likers:</h3>
+          <p>Rank | Username | Email</p>
+        </div>
+      )}
       {topLikersData &&
         topLikersData.map((u, index) => (
           <div>
             {index + 1} | {u.username} | {u.email}
           </div>
         ))}
+      <br />
+      <br />
+      <form onSubmit={handleUserSearch}>
+        <label>
+          Search By Username:
+          <input
+            type="text"
+            onChange={(e) => setSearchUsername(e.target.value)}
+          />
+        </label>
+        <input type="submit" value="View User" />
+      </form>
+      {searchUsernameData && (
+        <div>
+          <h3>Username Search Result:</h3>
+          <p>Username: {searchUsernameData.username}</p>
+          <p>Email: {searchUsernameData.email}</p>
+        </div>
+      )}
     </div>
   );
 };
