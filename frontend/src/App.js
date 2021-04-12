@@ -22,6 +22,7 @@ const App = () => (
         <Route exact path="/createaccount" component={CreateAccount} />
         <Route exact path="/create-recipe" component={CreateRecipe} />
         <Route exact path="/create-ingredient" component={CreateIngredient} />
+        <Route exact path="/create-post" component={CreatePost} />
         <Route exact path="/comments" component={CreateComment} />
         <Route exact path="/settings" component={Settings} />
       </Switch>
