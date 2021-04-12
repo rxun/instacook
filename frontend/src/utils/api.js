@@ -42,7 +42,12 @@ export const createComment = async (commentInfo) =>
 
 export const getComment = async (comment_id) =>
   instance
-    .get(`${API_URL}/account/search-comment?comment_id=${comment_id}`)
+    .get(`${API_URL}/account/get-comment?comment_id=${comment_id}`)
+    .catch(console.error);
+
+export const searchComment = async (text) =>
+  instance
+    .get(`${API_URL}/account/search-comment?text=${text}`)
     .catch(console.error);
 
 export const updateComment = async (commentInfo) =>

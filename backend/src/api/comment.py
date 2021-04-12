@@ -8,7 +8,9 @@ comment = Blueprint("comment", __name__)
 def create_comment():
     req = request.get_json()
 
+
     try:
+        comment_id = 0
         conn = db.connect()
         # Find the next comment_id to use
         query = 'SELECT MAX(comment_id) FROM Comment;'
@@ -16,33 +18,34 @@ def create_comment():
         for result in query_results:
             comment_id = result[0] + 1
         # Insert new comment into Comment table
-        query = 'INSERT INTO Comment (comment_id, post_id, account_id, text, date_posted) VALUES ("{}", "{}", "{}", "{}", "{}");'.format(comment_id, req['post'], req['account'], req['text'], req['date_posted']])
+        query = 'INSERT INTO Comment (comment_id, post_id, account_id, text, date_posted) VALUES ({}, {}, {}, "{}", "{}");'.format(comment_id, req['postId'], req['accountId'], req['text'], req['date'])
         conn.execute(query)
         conn.close()
         return create_response(status=200)
     except:
         return create_response(status=400)
 
-@account.route('/search-comment', methods=['GET'])
+@comment.route('/search-comment', methods=['GET'])
 def search_comment():
-    comment_id = request.args.get('comment_id')
+    text = request.args.get('text')
 
     conn = db.connect()
-    query = 'SELECT * FROM Comment WHERE comment_id="{}";'.format(comment_id)
+    query = 'SELECT * FROM Comment WHERE text LIKE"%{}%";'.format(text)
     query_results = conn.execute(query).fetchall()
     conn.close()
 
-    if len(query_results):
-        return create_response(message="Comment id taken")
-    return create_response(message="Comment id available")
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results})
 
 @comment.route('/update-comment', methods=['POST'])
 def update_comment():
     req = request.get_json()
+    commentId = req.get('commentId')
+    text = req.get('text')
     print(req)
     try:
         conn = db.connect()
-        query = 'UPDATE Comment SET text="{}" WHERE text="{}";'.format(req['newComment'], req['oldComment'])
+        query = 'UPDATE Comment SET text="{}" WHERE commentId="{}";'
         conn.execute(query)
         conn.close()
         return create_response(status=200)
@@ -52,10 +55,11 @@ def update_comment():
 @comment.route('/delete-comment', methods=['POST'])
 def delete_comment():
     req = request.get_json()
+    commentId = req.get('commentId')
 
     try:
         conn = db.connect()
-        query = 'DELETE FROM Comment WHERE text="{}";'.format(req['comment'])
+        query = 'DELETE FROM Comment WHERE commentId="{}";'.format(req['comment'])
         conn.execute(query)
         conn.close()
         return create_response(status=200)
@@ -95,4 +99,4 @@ def get_comment():
         data["comment_id"] = query_results[0][0]
         data["text"] = query_results[0][1]
         return create_response(status=200, data=data)
-    return create_Response(status=400)
+    return create_response(status=400)

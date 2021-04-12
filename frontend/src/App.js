@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
-import Comments from "./pages/Comments";
+import CreateComment from "./pages/CreateComment";
 
 const App = () => (
   <Router>
@@ -13,7 +13,7 @@ const App = () => (
       <Route exact path="/login" component={Login} />
       <Route exact path="/createaccount" component={CreateAccount} />
       <Route exact path="/settings" component={Settings} />
-      <Route exact path="/comments" component={Comments} />
+      <Route exact path="/comments" component={CreateComment} />
     </Switch>
   </Router>
 );
