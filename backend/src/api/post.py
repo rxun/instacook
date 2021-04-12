@@ -75,6 +75,17 @@ def get_post_by_id(id):
     results = [dict(obj) for obj in query_results]
     return create_response(data={'result':results})
 
+@post.route('/fewest', methods=['GET'])
+def get_fewest_steps_posts():
+    conn = db.connect()
+    query_results = conn.execute(
+        f"SELECT p.title, p.description, p.account_id, LENGTH(r.steps) as stepsLength FROM Post p NATURAL JOIN Recipe r WHERE LENGTH(r.steps) < (SELECT AVG(LENGTH(steps)) as recipeAvgSteps From Recipe) ORDER BY LENGTH(r.steps) ASC LIMIT 15;"
+    ).fetchall()
+    print(query_results)
+    conn.close()
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result':results})
+
 @post.route('/', methods=['PUT'])
 def update_post():
     data = request.json

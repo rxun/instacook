@@ -43,6 +43,9 @@ export const getPosts = async () =>
 export const getPostsOnKeyword = async (keyword) => 
   await get("/post", { keyword }).then(res => res.result.result);
 
+export const getFewestStepsPosts = async () =>
+  await get("/post/fewest").then((res) => res.result.result);
+
 export const getPost = async (post_id) => 
   await get(`/post/${post_id}`).then((res) => res.result.result);
 
