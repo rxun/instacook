@@ -6,12 +6,14 @@ import CreateRecipe from "./pages/CreateRecipe";
 import NavHeader from "./components/NavHeader";
 import CreateIngredient from "./pages/CreateIngredient";
 import Settings from "./pages/Settings";
+import Home from "./pages/Home";
 
 const App = () => (
   <div>
     <NavHeader />
     <Router>
       <Switch>
+        <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/createaccount" component={CreateAccount} />
         <Route exact path="/create-recipe" component={CreateRecipe} />

@@ -106,3 +106,6 @@ export const getUser = async (username) =>
   instance
     .get(`${API_URL}/account/get-user?username=${username}`)
     .catch(console.error);
+
+export const getTopCommentors = async () =>
+  await get("/account/top-commentors").then((res) => res.result.result);

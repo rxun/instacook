@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getTopLikers, getUser } from "../utils/api";
+import { getTopLikers, getUser, getTopCommentors } from "../utils/api";
 
 const Home = (props) => {
   const currentUsername = props.history.location.state?.username;
@@ -8,6 +8,15 @@ const Home = (props) => {
   const [topLikersData, setTopLikersData] = useState(null);
   const [searchUsername, setSearchUsername] = useState("");
   const [searchUsernameData, setSearchUsernameData] = useState(null);
+  const [topCommentors, setTopCommentors] = useState();
+
+  useEffect(() => {
+    async function fetchData() {
+      setTopCommentors(await getTopCommentors());
+    }
+
+    fetchData();
+  }, []);
 
   const handleTopLikersSubmit = async (e) => {
     e.preventDefault();
@@ -76,6 +85,19 @@ const Home = (props) => {
           <p>Email: {searchUsernameData.email}</p>
         </div>
       )}
+      <br />
+      <br />
+      <div style={{ paddingLeft: "1em", overflowY: 'scroll', height: '20em' }}>
+        <h3>Top commentors</h3>
+        {topCommentors &&
+          topCommentors.map((user) => (
+            <div style={{ paddingBottom: "0.5em" }}>
+              <p>Email: {user.email}</p>
+              <p>Username: {user.username}</p>
+              <p>Number of comments: {user.nComments}</p>
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

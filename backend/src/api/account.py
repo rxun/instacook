@@ -4,12 +4,14 @@ from src import db
 
 account = Blueprint("account", __name__)
 
+
 @account.route('/login', methods=['POST'])
 def login():
     req = request.get_json()
 
     conn = db.connect()
-    query = 'SELECT * FROM Account WHERE username="{}" AND password="{}";'.format(req['username'], req['password'])
+    query = 'SELECT * FROM Account WHERE username="{}" AND password="{}";'.format(
+        req['username'], req['password'])
     query_results = conn.execute(query).fetchall()
     conn.close()
 
@@ -19,6 +21,7 @@ def login():
             data["username"] = result[7]
         return create_response(status=200, data=data)
     return create_response(status=401)
+
 
 @account.route('/create', methods=['POST'])
 def create_account():
@@ -32,12 +35,14 @@ def create_account():
         for result in query_results:
             account_id = result[0] + 1
         # Insert new user into Account table
-        query = 'INSERT INTO Account (account_id, email, first_name, last_name, password, username) VALUES ("{}", "{}", "{}", "{}", "{}", "{}");'.format(account_id, req['email'], req['firstName'], req['lastName'], req['password'], req['username'])
+        query = 'INSERT INTO Account (account_id, email, first_name, last_name, password, username) VALUES ("{}", "{}", "{}", "{}", "{}", "{}");'.format(
+            account_id, req['email'], req['firstName'], req['lastName'], req['password'], req['username'])
         conn.execute(query)
         conn.close()
         return create_response(status=200)
     except:
         return create_response(status=400)
+
 
 @account.route('/search-username', methods=['GET'])
 def search_username():
@@ -52,18 +57,21 @@ def search_username():
         return create_response(message="Username taken")
     return create_response(message="Username available")
 
+
 @account.route('/update-username', methods=['POST'])
 def update_username():
     req = request.get_json()
     print(req)
     try:
         conn = db.connect()
-        query = 'UPDATE Account SET username="{}" WHERE username="{}";'.format(req['newUsername'], req['oldUsername'])
+        query = 'UPDATE Account SET username="{}" WHERE username="{}";'.format(
+            req['newUsername'], req['oldUsername'])
         conn.execute(query)
         conn.close()
         return create_response(status=200)
     except:
         return create_response(status=400)
+
 
 @account.route('/delete-account', methods=['POST'])
 def delete_account():
@@ -71,12 +79,14 @@ def delete_account():
 
     try:
         conn = db.connect()
-        query = 'DELETE FROM Account WHERE username="{}";'.format(req['username'])
+        query = 'DELETE FROM Account WHERE username="{}";'.format(
+            req['username'])
         conn.execute(query)
         conn.close()
         return create_response(status=200)
     except:
         return create_response(status=400)
+
 
 @account.route('/get-top-likers', methods=['GET'])
 def get_top_likers():
@@ -97,12 +107,14 @@ def get_top_likers():
         i += 1
     return create_response(status=200, data=data)
 
+
 @account.route('/get-user', methods=['GET'])
 def get_user():
     username = request.args.get('username')
 
     conn = db.connect()
-    query = 'SELECT email, username FROM Account WHERE username="{}"'.format(username)
+    query = 'SELECT email, username FROM Account WHERE username="{}"'.format(
+        username)
     query_results = conn.execute(query).fetchall()
     conn.close()
 
@@ -111,4 +123,23 @@ def get_user():
         data["email"] = query_results[0][0]
         data["username"] = query_results[0][1]
         return create_response(status=200, data=data)
-    return create_Response(status=400)
+    return create_response(status=400)
+
+
+@account.route('/top-commentors', methods=['GET'])
+def get_top_poster():
+    conn = db.connect()
+    query_results = conn.execute('''
+    SELECT T.email, T.username, nComments
+    FROM (
+    SELECT A.email, A.username, COUNT(*) as nComments
+    FROM (Account A NATURAL JOIN Post P) JOIN Comment C ON P.post_id = C.post_id
+    GROUP BY A.email, A.username
+    ORDER BY nComments
+    ) T
+    LIMIT 15;
+    ''').fetchall()
+    conn.close()
+
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results})
