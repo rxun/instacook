@@ -71,10 +71,12 @@ def create_app():
 
     # import and register blueprints
     from src.api import (
-      account
+      post,
+      account,
     )
     
     app.register_blueprint(account.account, url_prefix='/api/account')
+    app.register_blueprint(post.post, url_prefix='/api/post')
 
     # register error handlers
     @app.errorhandler(404)
