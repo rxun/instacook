@@ -45,7 +45,7 @@ def update_comment():
     print(req)
     try:
         conn = db.connect()
-        query = 'UPDATE Comment SET text="{}" WHERE commentId="{}";'
+        query = 'UPDATE Comment SET text="{}" WHERE comment_id={};'.format(text, commentId)
         conn.execute(query)
         conn.close()
         return create_response(status=200)
@@ -59,7 +59,7 @@ def delete_comment():
 
     try:
         conn = db.connect()
-        query = 'DELETE FROM Comment WHERE commentId="{}";'.format(req['comment'])
+        query = 'DELETE FROM Comment WHERE comment_id={};'.format(req['commentId'])
         conn.execute(query)
         conn.close()
         return create_response(status=200)
