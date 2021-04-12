@@ -72,7 +72,7 @@ export const deleteRecipe = async (recipe_id) =>
   await del("/recipes/", { recipe_id });
 
 export const getRecipesOnKeyword = async (keyword) =>
-  await get("/recipes", { keyword }).then(res => res.result.result)
+  await get("/recipes", { keyword }).then((res) => res.result.result);
 
 export const getIngredients = async () =>
   await get("/ingredients/").then((res) => res.result.result);
@@ -132,5 +132,40 @@ export const getUser = async (username) =>
     .get(`${API_URL}/account/get-user?username=${username}`)
     .catch(console.error);
 
+export const createComment = async (commentInfo) =>
+  instance
+    .post(`${API_URL}/comment/create`, commentInfo)
+    .then((res) => res.data)
+    .catch(console.error);
+
+export const getComment = async (comment_id) =>
+  await instance
+    .get(`${API_URL}/comment/get-comment?comment_id=${comment_id}`)
+    .then((res) => res.data.result)
+    .catch(console.error);
+
+export const searchComment = async (text) =>
+  instance
+    .get(`${API_URL}/comment/search-comment?text=${text}`)
+    .then(res => res.data.result.result)
+    .catch(console.error);
+
+export const updateComment = async (commentInfo) =>
+  instance
+    .post(`${API_URL}/comment/update-comment`, commentInfo)
+    .then((res) => res.data)
+    .catch(console.error);
+
+export const deleteComment = async (commentInfo) =>
+  instance
+    .post(`${API_URL}/comment/delete-comment`, commentInfo)
+    .then((res) => res.data)
+    .catch(console.error);
+
+export const getShortRecipes = async (count) =>
+  instance
+    .get(`${API_URL}/comment/get-short-recipes?count=${count}`)
+    .then((res) => res.data)
+    .catch(console.error);
 export const getTopCommentors = async () =>
   await get("/account/top-commentors").then((res) => res.result.result);
