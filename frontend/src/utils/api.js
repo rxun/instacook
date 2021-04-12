@@ -1,5 +1,6 @@
 import axios from "axios";
 
+const API_URL = "http://localhost:5000/api";
 const instance = axios.create({
   baseURL: "http://localhost:5000/api",
 });
@@ -53,7 +54,9 @@ export const getIngredients = async () =>
   await get("/ingredients/").then((res) => res.result.result);
 
 export const getIngredientById = async (ingredient_id) =>
-  await get(`/ingredients/${ingredient_id}`).then(res => res.result.result[0])
+  await get(`/ingredients/${ingredient_id}`).then(
+    (res) => res.result.result[0]
+  );
 
 export const createIngredient = async (name, type) =>
   await post("/ingredients/", { name, type });
@@ -69,3 +72,34 @@ export const getIngredientByName = async (name) =>
 
 export const getIngredientByType = async (type) =>
   await get("/ingredients/", { type }).then((res) => res.result.result);
+
+export const login = async (accountInfo) =>
+  instance.post(`${API_URL}/account/login`, accountInfo).catch(console.error);
+
+export const createAccount = async (accountInfo) =>
+  instance.post(`${API_URL}/account/create`, accountInfo).catch(console.error);
+
+export const getUsername = async (username) =>
+  instance
+    .get(`${API_URL}/account/search-username?username=${username}`)
+    .catch(console.error);
+
+export const updateUsername = async (usernameInfo) =>
+  instance
+    .post(`${API_URL}/account/update-username`, usernameInfo)
+    .catch(console.error);
+
+export const deleteAccount = async (usernameInfo) =>
+  instance
+    .post(`${API_URL}/account/delete-account`, usernameInfo)
+    .catch(console.error);
+
+export const getTopLikers = async (count) =>
+  instance
+    .get(`${API_URL}/account/get-top-likers?count=${count}`)
+    .catch(console.error);
+
+export const getUser = async (username) =>
+  instance
+    .get(`${API_URL}/account/get-user?username=${username}`)
+    .catch(console.error);
