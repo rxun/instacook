@@ -26,3 +26,8 @@ export const deleteAccount = async (usernameInfo) =>
   instance
     .post(`${API_URL}/account/delete-account`, usernameInfo)
     .catch(console.error);
+
+export const getTopLikers = async (count) =>
+  instance
+    .get(`${API_URL}/account/get-top-likers?count=${count}`)
+    .catch(console.error);

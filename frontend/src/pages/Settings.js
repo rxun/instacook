@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { getUsername, updateUsername, deleteAccount } from "../utils/api";
 
-import "../css/settings.scss";
-
 const Settings = (props) => {
   const [username, setUsername] = useState("");
   const [isUsernameTaken, setIsUsernameTaken] = useState(false);

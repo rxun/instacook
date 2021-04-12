@@ -77,3 +77,22 @@ def delete_account():
         return create_response(status=200)
     except:
         return create_response(status=400)
+
+@account.route('/get-top-likers', methods=['GET'])
+def get_top_likers():
+    count = request.args.get('count')
+
+    conn = db.connect()
+    query = 'SELECT topLikers.email, topLikers.username FROM (SELECT a.email, a.username, COUNT(*) as numLikes FROM Account a JOIN Likes l on a.account_id = l.account_id GROUP BY a.account_id ORDER BY numLikes DESC) topLikers LIMIT {};'.format(count)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+
+    data = {}
+    i = 0
+    for result in query_results:
+        data[i] = {
+            "email": result[0],
+            "username": result[1]
+        }
+        i += 1
+    return create_response(status=200, data=data)
