@@ -4,7 +4,6 @@ from src import db
 
 account = Blueprint("account", __name__)
 
-
 @account.route('/login', methods=['POST'])
 def login():
     req = request.get_json()
@@ -39,3 +38,16 @@ def create_account():
         return create_response(status=200)
     except:
         return create_response(status=400)
+
+@account.route('/search-username', methods=['GET'])
+def search_username():
+    username = request.args.get('username')
+
+    conn = db.connect()
+    query = 'SELECT * FROM Account WHERE username="{}";'.format(username)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+
+    if len(query_results):
+        return create_response(message="Username taken")
+    return create_response(message="Username available")

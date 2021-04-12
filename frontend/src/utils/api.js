@@ -11,3 +11,8 @@ export const login = async (accountInfo) =>
 
 export const createAccount = async (accountInfo) =>
   instance.post(`${API_URL}/account/create`, accountInfo).catch(console.error);
+
+export const getUsername = async (username) =>
+  instance
+    .get(`${API_URL}/account/search-username?username=${username}`)
+    .catch(console.error);

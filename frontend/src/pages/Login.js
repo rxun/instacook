@@ -17,6 +17,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     const res = await login({ username, password });
+    console.log("HERE: ", res);
     if (res) {
       alert(`Login Successful: Welcome Back ${username}!`);
     } else {
