@@ -41,7 +41,7 @@ export const getPosts = async () =>
   await get("/post/").then((res) => res.result.result);
 
 export const getPostsOnKeyword = async (keyword) => 
-  await get("/recipes", { keyword });
+  await get("/post", { keyword }).then(res => res.result.result);
 
 export const getPost = async (post_id) => 
   await get(`/post/${post_id}`).then((res) => res.result.result);

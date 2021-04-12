@@ -52,8 +52,10 @@ def get_posts():
     # try:
     conn = db.connect()
     if keyword:
-        print(f"SELECT * FROM Post WHERE description LIKE '%{keyword}%' OR title LIKE '%{keyword}%' LIMIT 20;")
-        query_results = conn.execute(f"SELECT * FROM Post WHERE description LIKE '%{keyword}%' OR title LIKE '%{keyword}%' LIMIT 20;").fetchall()
+        print(f"SELECT * FROM Post WHERE title LIKE '%%{keyword}%%' LIMIT 20;")
+        query_results = conn.execute(
+            f"SELECT * FROM Post WHERE title LIKE '%%{keyword}%%'LIMIT 20;").fetchall()
+        # print(query_results)
     else:
         query_results = conn.execute("SELECT * FROM Post LIMIT 20;").fetchall()
     conn.close()
