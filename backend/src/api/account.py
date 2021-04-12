@@ -5,7 +5,7 @@ from src import db
 account = Blueprint("account", __name__)
 
 
-@account.route('/login')
+@account.route('/login', methods=['GET'])
 def login():
     req = request.get_json()
 
@@ -21,13 +21,19 @@ def login():
         return create_response(status=200, data=data)
     return create_response(status=401)
 
-@account.route('/create')
+@account.route('/create', methods=['POST'])
 def create_account():
     req = request.get_json()
 
     try:
         conn = db.connect()
-        query = 'INSERT INTO Account (email, first_name, last_name, password, username) VALUES ("{}", "{}", "{}", "{}", "{}");'.format(req['email'], req['first_name'], req['last_name'], req['password'], req['username'])
+        # Find the next account_id to use
+        query = 'SELECT MAX(account_id) FROM Account;'
+        query_results = conn.execute(query).fetchall()
+        for result in query_results:
+            account_id = result[0] + 1
+        # Insert new user into Account table
+        query = 'INSERT INTO Account (account_id, email, first_name, last_name, password, username) VALUES ("{}", "{}", "{}", "{}", "{}", "{}");'.format(account_id, req['email'], req['first_name'], req['last_name'], req['password'], req['username'])
         conn.execute(query)
         conn.close()
         return create_response(status=200)
