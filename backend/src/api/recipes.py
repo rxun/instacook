@@ -15,7 +15,7 @@ def get_recipes():
         conn = db.connect()
         if keyword:
             query_results = conn.execute(
-                f'SELECT recipe_id, steps FROM Recipe WHERE steps LIKE \'%{keyword}%\' LIMIT 20;').fetchall()
+                f'SELECT recipe_id, steps FROM Recipe WHERE steps LIKE \'%%{keyword}%%\' LIMIT 20;').fetchall()
         else:
             query_results = conn.execute(
                 "SELECT * FROM Recipe LIMIT 20;").fetchall()

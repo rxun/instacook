@@ -48,7 +48,7 @@ export const deleteRecipe = async (recipe_id) =>
   await del("/recipes/", { recipe_id });
 
 export const getRecipesOnKeyword = async (keyword) =>
-  await get("/recipes", { keyword });
+  await get("/recipes", { keyword }).then(res => res.result.result)
 
 export const getIngredients = async () =>
   await get("/ingredients/").then((res) => res.result.result);

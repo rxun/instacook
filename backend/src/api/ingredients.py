@@ -17,15 +17,15 @@ def get_ingredients():
     query_results = None
     if name and itype:
         query_results = conn.execute(
-            f"SELECT * FROM Ingredient WHERE name LIKE '%{name}%' AND type LIKE '%{itype}%' LIMIT 20;").fetchall()
+            f"SELECT * FROM Ingredient WHERE name LIKE '%%{name}%%' AND type LIKE '%%{itype}%%' LIMIT 20;").fetchall()
     elif name:
         print('h')
         query_results = conn.execute(
-            f"SELECT ingredient_id, name, type FROM Ingredient WHERE name LIKE '%{name}%' LIMIT 20;").fetchall()
+            f"SELECT ingredient_id, name, type FROM Ingredient WHERE name LIKE '%%{name}%%' LIMIT 20;").fetchall()
         print(query_results)
     elif itype:
         query_results = conn.execute(
-            f"SELECT * FROM Ingredient WHERE type LIKE '%{itype}%' LIMIT 20;").fetchall()
+            f"SELECT * FROM Ingredient WHERE type LIKE '%%{itype}%%' LIMIT 20;").fetchall()
     else:
         query_results = conn.execute(
             "SELECT * FROM Ingredient LIMIT 20;").fetchall()
