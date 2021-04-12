@@ -26,6 +26,18 @@ const PostCard = ({ post }) => (
     title={`Post ${post.title}`}
     style={{ width: 300, paddingLeft: "1em", paddingRight: "1em" }}
   >
+    <img src={post.picture} />
+    <p>Description: {post.description}</p>
+    <p>Account ID: {post.account_id}</p>
+    <p>Post Length: {post.stepsLength}</p>
+  </Card>
+);
+
+const ReversePostCard = ({ post }) => (
+  <Card
+    title={`Post ${post.title}`}
+    style={{ width: 300, paddingLeft: "1em", paddingRight: "1em" }}
+  >
     <img src={post.description} />
     <p>Description: {post.picture}</p>
     <p>Account ID: {post.account_id}</p>
@@ -209,7 +221,7 @@ const CreatePost = () => {
         <div>
           <h2>Post List</h2>
           <div>
-            {keywordPosts && keywordPosts.map((post) => <PostCard post={post} />)}
+            {keywordPosts && keywordPosts.map((post) => <ReversePostCard post={post} />)}
           </div>
         </div>
       )}
@@ -227,7 +239,7 @@ const CreatePost = () => {
         <div>
           <h2>Post List</h2>
           <div>
-            {fewestStepsPosts && fewestStepsPosts.map((post) => <PostCard post={post} />)}
+            {fewestStepsPosts && fewestStepsPosts.map((post) => <ReversePostCard post={post} />)}
           </div>
         </div>
       )}
