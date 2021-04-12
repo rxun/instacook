@@ -48,3 +48,24 @@ export const deleteRecipe = async (recipe_id) =>
 
 export const getRecipesOnKeyword = async (keyword) =>
   await get("/recipes", { keyword });
+
+export const getIngredients = async () =>
+  await get("/ingredients/").then((res) => res.result.result);
+
+export const getIngredientById = async (ingredient_id) =>
+  await get(`/ingredients/${ingredient_id}`).then(res => res.result.result[0])
+
+export const createIngredient = async (name, type) =>
+  await post("/ingredients/", { name, type });
+
+export const updateIngredient = async (ingredient_id, name, type) =>
+  await put("/ingredients/", { ingredient_id, name, type });
+
+export const deleteIngredient = async (ingredient_id) =>
+  await del("/ingredients/", { ingredient_id });
+
+export const getIngredientByName = async (name) =>
+  await get("/ingredients/", { name }).then((res) => res.result.result);
+
+export const getIngredientByType = async (type) =>
+  await get("/ingredients/", { type }).then((res) => res.result.result);

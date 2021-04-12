@@ -14,12 +14,11 @@ import {
 import "../css/login.scss";
 import "../css/createrecipe.scss";
 import {
-  deleteRecipe,
-  getRecipes,
-  updateRecipe,
-  getRecipe,
-  createRecipe,
-  getRecipesOnKeyword,
+  createIngredient,
+  deleteIngredient,
+  getIngredientById,
+  getIngredientByName,
+  updateIngredient,
 } from "../utils/api";
 
 const CRUD_OPTIONS = {
@@ -29,61 +28,69 @@ const CRUD_OPTIONS = {
   DELETE: 4,
 };
 
-const RecipeCard = ({ recipe, length }) => (
+const IngredientCard = ({ ingredient }) => (
   <Card
-    title={`Recipe ${recipe.recipe_id}`}
+    title={`Ingredient ${ingredient.ingredient_id}`}
     style={{ width: 300, paddingLeft: "1em", paddingRight: "1em" }}
   >
-    <p>{recipe.steps.substring(0, Math.min(recipe.steps.length, length))}</p>
+    <p>{ingredient.name}</p>
+    <p>{ingredient.type}</p>
   </Card>
 );
 
-const CreateRecipe = () => {
+const CreateIngredient = () => {
   let history = useHistory();
   const [steps, setSteps] = useState("");
-  const [recipeId, setRecipeId] = useState("");
+  const [ingredientId, setIngredientId] = useState("");
+  const [ingredientName, setIngredientName] = useState("");
+  const [ingredientType, setIngredientType] = useState("");
   const [crudOption, setCrudOption] = useState(CRUD_OPTIONS.CREATE);
-  const [requestedRecipe, setRequestedRecipe] = useState();
+  const [requestedIngredient, setRequestedIngredient] = useState();
   const [fetchMessage, setFetchMessage] = useState();
   const [success, setSuccess] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [keywordRecipes, setKeywordRecipes] = useState([]);
+  const [keywordIngredients, setKeywordIngredients] = useState([]);
 
   const onCRUDSubmit = async () => {
     let res;
 
     switch (crudOption) {
       case CRUD_OPTIONS.CREATE:
-        res = await createRecipe(steps);
+        res = await createIngredient(ingredientName, ingredientType);
 
         if (res && res.success)
           message.success(
-            `Successfully created recipe ${res.result.recipe_id}`
+            `Successfully created ingredient ${res.result.ingredient_id}`
           );
-        else message.error("Failed to create recipe");
+        else message.error("Failed to create ingredient");
 
         break;
       case CRUD_OPTIONS.READ:
-        res = await getRecipe(recipeId);
+        res = await getIngredientById(ingredientId);
 
-        if (res) setRequestedRecipe(res[0]);
-        else message.error(`Failed to read recipe ${recipeId}`);
+        setRequestedIngredient(res);
+
+        if (!res) message.error(`Failed to read ingredient ${ingredientId}`);
 
         break;
       case CRUD_OPTIONS.UPDATE:
-        res = await updateRecipe(recipeId, steps);
+        res = await updateIngredient(
+          ingredientId,
+          ingredientName,
+          ingredientType
+        );
 
         if (res && res.success)
-          message.success(`Successfully updated recipe ${recipeId}`);
-        else message.error(`Failed to update recipe ${recipeId}`);
+          message.success(`Successfully updated ingredient ${ingredientId}`);
+        else message.error(`Failed to update ingredient ${ingredientId}`);
 
         break;
       case CRUD_OPTIONS.DELETE:
-        res = await deleteRecipe(recipeId);
+        res = await deleteIngredient(ingredientId);
 
         if (res && res.success)
-          message.success(`Successfully deleted recipe ${recipeId}`);
-        else message.error(`Failed to delete recipe ${recipeId}`);
+          message.success(`Successfully deleted ingredient ${ingredientId}`);
+        else message.error(`Failed to delete ingredient ${ingredientId}`);
 
         break;
       default:
@@ -92,12 +99,14 @@ const CreateRecipe = () => {
   };
 
   const onSearch = async () => {
-    const res = await getRecipesOnKeyword(searchText);
+    const res = await getIngredientByName(searchText);
 
     if (!res)
-      message.error(`Failed to find any recipes that matched "${searchText}"`);
+      message.error(
+        `Failed to find any ingredients that matched "${searchText}"`
+      );
 
-    setKeywordRecipes(res ? res : []);
+    setKeywordIngredients(res ? res : []);
   };
 
   return (
@@ -107,22 +116,34 @@ const CreateRecipe = () => {
         <p style={{ color: success ? "green" : "red" }}>{fetchMessage}</p>
       )}
       <Form onFinish={onCRUDSubmit}>
-        <Form.Item label="Recipe ID">
+        <Form.Item label="Ingredient ID">
           <Input
             rows={12}
             placeholder="0"
             disabled={crudOption === CRUD_OPTIONS.CREATE}
-            onChange={(e) => setRecipeId(e.target.value)}
+            onChange={(e) => setIngredientId(e.target.value)}
           />
         </Form.Item>
-        <Form.Item label="Steps">
-          <Input.TextArea
+        <Form.Item label="Ingredient Name">
+          <Input
             rows={12}
+            placeholder="0"
             disabled={
-              crudOption === CRUD_OPTIONS.DELETE ||
-              crudOption === CRUD_OPTIONS.READ
+              crudOption === CRUD_OPTIONS.READ ||
+              crudOption === CRUD_OPTIONS.DELETE
             }
-            onChange={(e) => setSteps(e.target.value)}
+            onChange={(e) => setIngredientName(e.target.value)}
+          />
+        </Form.Item>
+        <Form.Item label="Ingredient Type">
+          <Input
+            rows={12}
+            placeholder="0"
+            disabled={
+              crudOption === CRUD_OPTIONS.READ ||
+              crudOption === CRUD_OPTIONS.DELETE
+            }
+            onChange={(e) => setIngredientType(e.target.value)}
           />
         </Form.Item>
         <Radio.Group
@@ -139,10 +160,10 @@ const CreateRecipe = () => {
         </Form.Item>
       </Form>
 
-      {requestedRecipe && (
+      {requestedIngredient && (
         <div>
-          <h2>Recipe {requestedRecipe.recipe_id}</h2>
-          <RecipeCard recipe={requestedRecipe} length={300} />
+          <h2>Recipe {requestedIngredient.ingredient_id}</h2>
+          <IngredientCard ingredient={requestedIngredient} />
         </div>
       )}
 
@@ -162,11 +183,14 @@ const CreateRecipe = () => {
         </div>
       </Form>
 
-      {keywordRecipes && keywordRecipes.length > 0 && (
+      {keywordIngredients && keywordIngredients.length > 0 && (
         <div>
-          <h2>Recipe List</h2>
+          <h2>Ingreident List</h2>
           <div className="recipe-list">
-            {keywordRecipes && keywordRecipes.map((recipe) => <RecipeCard recipe={recipe} length={100} />)}
+            {keywordIngredients &&
+              keywordIngredients.map((ingredient) => (
+                <IngredientCard ingredient={ingredient} />
+              ))}
           </div>
         </div>
       )}
@@ -174,4 +198,4 @@ const CreateRecipe = () => {
   );
 };
 
-export default CreateRecipe;
+export default CreateIngredient;

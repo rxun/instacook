@@ -11,19 +11,18 @@ def get_recipes():
     args = request.args
     keyword = args.get('keyword')
 
-    # try:
-    conn = db.connect()
-    if keyword:
-        print(f"SELECT recipe_id, steps FROM Recipe WHERE steps LIKE '%{keyword}%' LIMIT 20;")
-        query_results = conn.execute(f"SELECT recipe_id, steps FROM Recipe WHERE steps LIKE '%{keyword}%' LIMIT 20;").fetchall()
-    else:
-        query_results = conn.execute("SELECT * FROM Recipe LIMIT 20;").fetchall()
-    conn.close()
+    try:
+        conn = db.connect()
+        if keyword:
+            query_results = conn.execute(f'SELECT recipe_id, steps FROM Recipe WHERE steps LIKE \'%{keyword}%\' LIMIT 20;').fetchall()
+        else:
+            query_results = conn.execute("SELECT * FROM Recipe LIMIT 20;").fetchall()
+        conn.close()
 
-    results = [dict(obj) for obj in query_results]
-    return create_response(data={'result': results})
-    # except:
-    #     return create_response(status=400)
+        results = [dict(obj) for obj in query_results]
+        return create_response(data={'result': results})
+    except:
+        return create_response(status=400)
 
 
 @recipes.route('/<id>', methods=['GET'])
@@ -69,8 +68,8 @@ def update_recipe():
 
 @recipes.route('/', methods=['DELETE'])
 def delete_recipe():
-    data = request.args
-    recipe_id = data.get('recipe_id')
+    args = request.args
+    recipe_id = args.get('recipe_id')
 
     conn = db.connect()
     conn.execute(f'DELETE FROM Recipe WHERE recipe_id = {recipe_id}')
