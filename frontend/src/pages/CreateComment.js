@@ -170,7 +170,7 @@ const CreateComment = () => {
       </Form>
       {requestedComment && (
         <div>
-          <h2>Comment {requestedComment.comment_id}</h2>
+          <h2>Requested Comment</h2>
           <CommentCard comment={requestedComment} length={300} />
         </div>
       )}
