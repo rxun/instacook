@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:5000/api";
+const API_URL = "http://localhost:5000/api";
 
 const instance = axios.create({
   baseURL: API_URL,
@@ -38,29 +38,35 @@ export const getUser = async (username) =>
     .catch(console.error);
 
 export const createComment = async (commentInfo) =>
-  instance.post(`${API_URL}/comment/create`, commentInfo).catch(console.error);
+  instance.post(`${API_URL}/comment/create`, commentInfo)
+  .then(res => res.data)
+  .catch(console.error);
 
 export const getComment = async (comment_id) =>
-  instance
-    .get(`${API_URL}/account/get-comment?comment_id=${comment_id}`)
+  await instance
+    .get(`${API_URL}/comment/get-comment?comment_id=${comment_id}`)
+    .then(res => res.data.result)
     .catch(console.error);
 
 export const searchComment = async (text) =>
   instance
-    .get(`${API_URL}/account/search-comment?text=${text}`)
+    .get(`${API_URL}/comment/search-comment?text=${text}`)
     .catch(console.error);
 
 export const updateComment = async (commentInfo) =>
   instance
     .post(`${API_URL}/comment/update-comment`, commentInfo)
+    .then(res => res.data)
     .catch(console.error);
 
 export const deleteComment = async (commentInfo) =>
   instance
     .post(`${API_URL}/comment/delete-comment`, commentInfo)
+    .then(res => res.data)
     .catch(console.error);
 
 export const getShortRecipes = async (count) =>
   instance
     .get(`${API_URL}/comment/get-short-recipes?count=${count}`)
+    .then(res => res.data)
     .catch(console.error);

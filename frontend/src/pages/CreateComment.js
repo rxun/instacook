@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
-import { Form, Input, Button, Checkbox, Card, Space, Radio, message } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Card,
+  Space,
+  Radio,
+  message,
+} from "antd";
 
 import "../css/login.scss";
 import "../css/createcomment.scss";
-import { createComment, getComment, searchComment, updateComment, deleteComment } from "../utils/api";
+import {
+  createComment,
+  getComment,
+  searchComment,
+  updateComment,
+  deleteComment,
+} from "../utils/api";
 
 const CRUD_OPTIONS = {
   CREATE: 1,
@@ -25,7 +40,7 @@ const CommentCard = ({ comment, length }) => (
   </Card>
 );
 
-const CreateComment= () => {
+const CreateComment = () => {
   let history = useHistory();
   const [commentId, setCommentId] = useState("");
   const [postId, setPostId] = useState("");
@@ -41,12 +56,17 @@ const CreateComment= () => {
 
     switch (crudOption) {
       case CRUD_OPTIONS.CREATE:
-        res = await createComment({commentId, postId, accountId, text, date : new Date()});
+        res = await createComment({
+          postId,
+          accountId,
+          text,
+          date: new Date(),
+        });
         console.log(res);
 
         if (res && res.success)
           message.success(
-            `Successfully created comment ${res.result.commend_id}`
+            `Successfully created comment ${commentId}`
           );
         else message.error("Failed to create comment");
 
@@ -54,12 +74,13 @@ const CreateComment= () => {
       case CRUD_OPTIONS.READ:
         res = await getComment(commentId);
 
-        if (res) setRequestedComment(res[0]);
-        else message.error(`Failed to read comment ${commentId}`);
+        setRequestedComment(res);
+
+        if (!res) message.error(`Failed to read comment ${commentId}`);
 
         break;
       case CRUD_OPTIONS.UPDATE:
-        res = await updateComment({commentId, text});
+        res = await updateComment({ commentId, text });
 
         if (res && res.success)
           message.success(`Successfully updated comment ${commentId}`);
@@ -67,7 +88,7 @@ const CreateComment= () => {
 
         break;
       case CRUD_OPTIONS.DELETE:
-        res = await deleteComment({commentId});
+        res = await deleteComment({ commentId });
 
         if (res && res.success)
           message.success(`Successfully deleted comment ${commentId}`);
@@ -104,7 +125,8 @@ const CreateComment= () => {
           <Input
             rows={12}
             placeholder="0"
-            disabled={crudOption === CRUD_OPTIONS.DELETE ||
+            disabled={
+              crudOption === CRUD_OPTIONS.DELETE ||
               crudOption === CRUD_OPTIONS.READ ||
               crudOption === CRUD_OPTIONS.UPDATE
             }
@@ -115,7 +137,8 @@ const CreateComment= () => {
           <Input
             rows={12}
             placeholder="0"
-            disabled={crudOption === CRUD_OPTIONS.DELETE ||
+            disabled={
+              crudOption === CRUD_OPTIONS.DELETE ||
               crudOption === CRUD_OPTIONS.READ ||
               crudOption === CRUD_OPTIONS.UPDATE
             }
@@ -171,7 +194,10 @@ const CreateComment= () => {
         <div>
           <h2>Comment List</h2>
           <div className="comment-list">
-            {keywordComments && keywordComments.map((comment) => <CommentCard comment={comment} />)}
+            {keywordComments &&
+              keywordComments.map((comment) => (
+                <CommentCard comment={comment} />
+              ))}
           </div>
         </div>
       )}

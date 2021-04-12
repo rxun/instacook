@@ -90,7 +90,7 @@ def get_comment():
     comment_id = request.args.get('comment_id')
 
     conn = db.connect()
-    query = 'SELECT comment_id, text FROM Comment WHERE comment_id="{}"'.format(comment_id)
+    query = 'SELECT comment_id, text FROM Comment WHERE comment_id={}'.format(comment_id)
     query_results = conn.execute(query).fetchall()
     conn.close()
 
