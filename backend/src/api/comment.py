@@ -30,7 +30,7 @@ def search_comment():
     text = request.args.get('text')
 
     conn = db.connect()
-    query = 'SELECT * FROM Comment WHERE text LIKE"%{}%";'.format(text)
+    query = 'SELECT * FROM Comment WHERE text LIKE "%%{}%%";'.format(text)
     query_results = conn.execute(query).fetchall()
     conn.close()
 

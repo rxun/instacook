@@ -104,7 +104,7 @@ const CreateComment = () => {
     const res = await searchComment(searchText);
 
     if (!res)
-      message.error(`Failed to find any comments that matched "${searchText}"`);
+      message.error(`Failed to find any comments that contained "${searchText}"`);
 
     setKeywordComments(res ? res : []);
   };
