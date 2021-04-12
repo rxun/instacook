@@ -15,13 +15,12 @@ def create_comment():
         # Find the next comment_id to use
         query = 'SELECT MAX(comment_id) FROM Comment;'
         query_results = conn.execute(query).fetchall()
-        for result in query_results:
-            comment_id = result[0] + 1
+        comment_id = query_results[0][0] + 1
         # Insert new comment into Comment table
         query = 'INSERT INTO Comment (comment_id, post_id, account_id, text, date_posted) VALUES ({}, {}, {}, "{}", "{}");'.format(comment_id, req['postId'], req['accountId'], req['text'], req['date'])
         conn.execute(query)
         conn.close()
-        return create_response(status=200)
+        return create_response(status=200, data={'comment_id': comment_id})
     except:
         return create_response(status=400)
 

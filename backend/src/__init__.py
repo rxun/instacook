@@ -12,6 +12,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Referenced from PT1 Workshop 3
+
+
 def init_connection_engine():
     pool = sqlalchemy.create_engine(
         sqlalchemy.engine.url.URL(
@@ -25,7 +27,9 @@ def init_connection_engine():
 
     return pool
 
+
 db = init_connection_engine()
+
 
 class RequestFormatter(logging.Formatter):
     def format(self, record):
@@ -46,7 +50,8 @@ def create_app():
         app.run()
     """
 
-    app = Flask(__name__, static_folder="../../frontend/artifacts", static_url_path="")
+    app = Flask(__name__, static_folder="../../frontend/artifacts",
+                static_url_path="")
     CORS(app)  # add CORS
 
     # logging
@@ -71,20 +76,18 @@ def create_app():
 
     # import and register blueprints
     from src.api import (
-<<<<<<< HEAD
-      account,
-      comment
-=======
-      recipes,
-      ingredients,
-      recipe_contains,
-      account
->>>>>>> 57aa8dcfd8def6f373bbff85adc8ee180c0ebb50
+        account,
+        comment,
+        recipes,
+        ingredients,
+        recipe_contains
     )
-    
+
     app.register_blueprint(recipes.recipes, url_prefix='/api/recipes')
-    app.register_blueprint(ingredients.ingredients, url_prefix='/api/ingredients')
-    app.register_blueprint(recipe_contains.recipe_contains, url_prefix='/api/recipe_contains')
+    app.register_blueprint(ingredients.ingredients,
+                           url_prefix='/api/ingredients')
+    app.register_blueprint(recipe_contains.recipe_contains,
+                           url_prefix='/api/recipe_contains')
     app.register_blueprint(account.account, url_prefix='/api/account')
     app.register_blueprint(comment.comment, url_prefix='/api/comment')
 
