@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
+
 import "../css/login.scss";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  let history = useHistory();
 
   const handleUsernameChange = (e) => setUsername(e.target.value);
 
@@ -32,7 +36,9 @@ const Login = () => {
           />
         </label>
         <input type="submit" value="Login" />
-        <button type="button">Create Account</button>
+        <button type="button" onClick={() => history.push("/createaccount")}>
+          Create Account
+        </button>
       </form>
     </div>
   );
