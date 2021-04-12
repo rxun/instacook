@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import { login } from "../utils/api";
 
 import "../css/login.scss";
 
@@ -13,10 +14,14 @@ const Login = () => {
 
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // TODO: Call login endpoint with username & password
-    console.log("HERE: ", username, password);
+    const res = await login({ username, password });
+    if (res) {
+      alert(`Login Successful: Welcome Back ${username}!`);
+    } else {
+      alert(`Login Failed: Invalid Username or Password!`);
+    }
   };
 
   return (
