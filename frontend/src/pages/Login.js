@@ -22,6 +22,7 @@ const Login = () => {
     } else {
       alert(`Login Failed: Invalid Username or Password!`);
     }
+    // TODO: Redirect to home page if login successful
   };
 
   return (

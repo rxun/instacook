@@ -33,7 +33,7 @@ def create_account():
         for result in query_results:
             account_id = result[0] + 1
         # Insert new user into Account table
-        query = 'INSERT INTO Account (account_id, email, first_name, last_name, password, username) VALUES ("{}", "{}", "{}", "{}", "{}", "{}");'.format(account_id, req['email'], req['first_name'], req['last_name'], req['password'], req['username'])
+        query = 'INSERT INTO Account (account_id, email, first_name, last_name, password, username) VALUES ("{}", "{}", "{}", "{}", "{}", "{}");'.format(account_id, req['email'], req['firstName'], req['lastName'], req['password'], req['username'])
         conn.execute(query)
         conn.close()
         return create_response(status=200)

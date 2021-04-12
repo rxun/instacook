@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import { createAccount } from "../utils/api";
 
 import "../css/login.scss";
 
@@ -12,10 +13,22 @@ const CreateAccount = () => {
 
   let history = useHistory();
 
-  const handleCreateAccount = () => {
-    // TODO: Call create account endpoint with form entries
-    console.log("HERE: ", firstName, lastName, email, username, password);
-    history.push("/login");
+  const handleCreateAccount = async (e) => {
+    e.preventDefault();
+    const res = await createAccount({
+      firstName,
+      lastName,
+      email,
+      username,
+      password,
+    });
+
+    if (res) {
+      alert("Successfully created account!");
+      history.push("/login");
+    } else {
+      alert("Failed to create account! Please try again.");
+    }
   };
 
   return (
