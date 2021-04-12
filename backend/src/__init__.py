@@ -71,10 +71,16 @@ def create_app():
 
     # import and register blueprints
     from src.api import (
-      post,
+      recipes,
+      ingredients,
+      recipe_contains,
       account,
+      post
     )
     
+    app.register_blueprint(recipes.recipes, url_prefix='/api/recipes')
+    app.register_blueprint(ingredients.ingredients, url_prefix='/api/ingredients')
+    app.register_blueprint(recipe_contains.recipe_contains, url_prefix='/api/recipe_contains')
     app.register_blueprint(account.account, url_prefix='/api/account')
     app.register_blueprint(post.post, url_prefix='/api/post')
 
