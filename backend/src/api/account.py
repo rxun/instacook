@@ -7,11 +7,10 @@ account = Blueprint("account", __name__)
 
 @account.route('/login')
 def login():
-    username = request.args.get('username')
-    password = request.args.get('password')
+    req = request.get_json()
 
     conn = db.connect()
-    query = 'SELECT * FROM Account WHERE username={} AND password={};'.format(username, password)
+    query = 'SELECT * FROM Account WHERE username="{}" AND password="{}";'.format(req['username'], req['password'])
     query_results = conn.execute(query).fetchall()
     conn.close()
 
@@ -20,4 +19,17 @@ def login():
         for result in query_results:
             data["username"] = result[7]
         return create_response(status=200, data=data)
-    return create_Response(status=401)
+    return create_response(status=401)
+
+@account.route('/create')
+def create_account():
+    req = request.get_json()
+
+    try:
+        conn = db.connect()
+        query = 'INSERT INTO Account (email, first_name, last_name, password, username) VALUES ("{}", "{}", "{}", "{}", "{}");'.format(req['email'], req['first_name'], req['last_name'], req['password'], req['username'])
+        conn.execute(query)
+        conn.close()
+        return create_response(status=200)
+    except:
+        return create_response(status=400)
