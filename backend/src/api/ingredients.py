@@ -61,7 +61,7 @@ def update_ingredient():
 
 @ingredients.route('/', methods=['DELETE'])
 def delete_ingredient():
-    data = request.json
+    data = request.args
     ingredient_id = data.get('ingredient_id')
 
     conn = db.connect()

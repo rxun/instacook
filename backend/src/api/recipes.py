@@ -58,7 +58,7 @@ def update_recipe():
 
 @recipes.route('/', methods=['DELETE'])
 def delete_recipe():
-    data = request.json
+    data = request.args
     recipe_id = data.get('recipe_id')
 
     conn = db.connect()
