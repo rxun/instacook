@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import { createAccount, getUsername } from "../utils/api";
 
 import "../css/login.scss";
 
@@ -9,13 +10,40 @@ const CreateAccount = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isUsernameTaken, setIsUsernameTaken] = useState(null);
 
   let history = useHistory();
 
-  const handleCreateAccount = () => {
-    // TODO: Call create account endpoint with form entries
-    console.log("HERE: ", firstName, lastName, email, username, password);
-    history.push("/login");
+  const handleCreateAccount = async (e) => {
+    e.preventDefault();
+    if (isUsernameTaken) {
+      alert("Failed to create account! Username is taken.");
+    } else {
+      const res = await createAccount({
+        firstName,
+        lastName,
+        email,
+        username,
+        password,
+      });
+
+      if (res) {
+        alert("Successfully created account!");
+        history.push("/login");
+      } else {
+        alert("Failed to create account! Please try again.");
+      }
+    }
+  };
+
+  const handleUsernameChange = async (e) => {
+    const res = await getUsername(e.target.value);
+    if (res.data.message === "Username available") {
+      setIsUsernameTaken(false);
+    } else {
+      setIsUsernameTaken(true);
+    }
+    setUsername(e.target.value);
   };
 
   return (
@@ -36,8 +64,14 @@ const CreateAccount = () => {
         </label>
         <label>
           Username:
-          <input type="text" onChange={(e) => setUsername(e.target.value)} />
+          <input type="text" onChange={handleUsernameChange} />
         </label>
+        {username.length > 0 &&
+          (isUsernameTaken ? (
+            <p>Username is taken!</p>
+          ) : (
+            <p>Username is available!</p>
+          ))}
         <label>
           Password:
           <input

@@ -11,3 +11,31 @@ export const login = async (accountInfo) =>
 
 export const feed = async (accountInfo) =>
   instance.get(`${API_URL}/post/feed`, accountInfo).catch(console.error);
+  
+export const createAccount = async (accountInfo) =>
+  instance.post(`${API_URL}/account/create`, accountInfo).catch(console.error);
+
+export const getUsername = async (username) =>
+  instance
+    .get(`${API_URL}/account/search-username?username=${username}`)
+    .catch(console.error);
+
+export const updateUsername = async (usernameInfo) =>
+  instance
+    .post(`${API_URL}/account/update-username`, usernameInfo)
+    .catch(console.error);
+
+export const deleteAccount = async (usernameInfo) =>
+  instance
+    .post(`${API_URL}/account/delete-account`, usernameInfo)
+    .catch(console.error);
+
+export const getTopLikers = async (count) =>
+  instance
+    .get(`${API_URL}/account/get-top-likers?count=${count}`)
+    .catch(console.error);
+
+export const getUser = async (username) =>
+  instance
+    .get(`${API_URL}/account/get-user?username=${username}`)
+    .catch(console.error);
