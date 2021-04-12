@@ -19,6 +19,12 @@ const Login = () => {
     const res = await login({ username, password });
     if (res) {
       alert(`Login Successful: Welcome Back ${username}!`);
+      history.push({
+        pathname: "/",
+        state: {
+          username,
+        },
+      });
     } else {
       alert(`Login Failed: Invalid Username or Password!`);
     }
