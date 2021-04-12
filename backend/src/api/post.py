@@ -36,3 +36,63 @@ def create_post():
         return create_response(status=200)
     except:
         return create_response(status=400)
+
+@post.route('/', methods=['GET'])
+def get_posts():
+    args = request.args
+    keyword = args.get('keyword')
+
+    # try:
+    conn = db.connect()
+    if keyword:
+        print(f"SELECT * FROM Post WHERE description LIKE '%{keyword}%' OR title LIKE '%{keyword}%' LIMIT 20;")
+        query_results = conn.execute(f"SELECT * FROM Post WHERE description LIKE '%{keyword}%' OR title LIKE '%{keyword}%' LIMIT 20;").fetchall()
+    else:
+        query_results = conn.execute("SELECT * FROM Post LIMIT 20;").fetchall()
+    conn.close()
+
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results})
+    # except:
+    #     return create_response(status=400)
+
+@post.route('/<id>', methods=['GET'])
+def get_post_by_id(id):
+    conn = db.connect()
+    query_results = conn.execute(
+        f"SELECT * FROM Post WHERE post_id = {id};").fetchall()
+    conn.close()
+
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result':results})
+
+@post.route('/', methods=['PUT'])
+def update_post():
+    data = request.json
+    print(data)
+    
+    try:
+        post_id = data.get('post_id')
+        title = data.get('title')
+        picture = data.get('picture')
+        description = data.get('description')
+
+        conn = db.connect()
+        conn.execute(
+            f'UPDATE Post SET title = \'{title}\', picture = \'{picture}\', description=\'{description}\' WHERE post_id = {post_id}')
+        conn.close()
+        return create_response(status=200)
+    except:
+        return create_response(status=400)
+
+@post.route('/', methods=['DELETE'])
+def delete_post():
+    data = request.args
+    post_id = data.get('post_id')
+
+    conn = db.connect()
+    conn.execute(
+        f'DELETE FROM Post WHERE post_id = {post_id}')
+    conn.close()
+
+    return create_response()
