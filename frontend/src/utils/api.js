@@ -36,3 +36,26 @@ export const getUser = async (username) =>
   instance
     .get(`${API_URL}/account/get-user?username=${username}`)
     .catch(console.error);
+
+export const createComment = async (commentInfo) =>
+  instance.post(`${API_URL}/comment/create`, commentInfo).catch(console.error);
+
+export const getComment = async (comment_id) =>
+  instance
+    .get(`${API_URL}/account/search-comment?comment_id=${comment_id}`)
+    .catch(console.error);
+
+export const updateComment = async (commentInfo) =>
+  instance
+    .post(`${API_URL}/comment/update-comment`, commentInfo)
+    .catch(console.error);
+
+export const deleteComment = async (commentInfo) =>
+  instance
+    .post(`${API_URL}/comment/delete-comment`, commentInfo)
+    .catch(console.error);
+
+export const getShortRecipes = async (count) =>
+  instance
+    .get(`${API_URL}/comment/get-short-recipes?count=${count}`)
+    .catch(console.error);
