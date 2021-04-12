@@ -19,7 +19,8 @@ def get_recipes():
 @recipes.route('/<id>', methods=['GET'])
 def get_recipe_by_id(id):
     conn = db.connect()
-    query_results = conn.execute(f"SELECT recipe_id, steps FROM Recipe WHERE recipe_id = {id};").fetchall()
+    query_results = conn.execute(
+        f"SELECT recipe_id, steps FROM Recipe WHERE recipe_id = {id};").fetchall()
     conn.close()
 
     results = [dict(obj) for obj in query_results]
@@ -32,8 +33,10 @@ def create_recipe():
     steps = data.get('steps')
 
     conn = db.connect()
-    max_recipe_id = conn.execute(f'SELECT MAX(recipe_id) FROM Recipe;').fetchall()
-    conn.execute(f'INSERT INTO Recipe VALUES({max_recipe_id[0][0] + 1}, \'{steps}\');')
+    max_recipe_id = conn.execute(
+        f'SELECT MAX(recipe_id) FROM Recipe;').fetchall()
+    conn.execute(
+        f'INSERT INTO Recipe VALUES({max_recipe_id[0][0] + 1}, \'{steps}\');')
     conn.close()
 
     return create_response()
