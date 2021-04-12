@@ -35,10 +35,16 @@ const del = async (url, params) =>
 export const getRecipes = async () =>
   await get("/recipes/").then((res) => res.result.result);
 
+export const getRecipe = async (recipe_id) =>
+  await get(`/recipes/${recipe_id}`).then((res) => res.result.result);
+
 export const createRecipe = async (steps) => await post("/recipes/", { steps });
 
 export const updateRecipe = async (recipe_id, steps) =>
   await put("/recipes/", { recipe_id, steps });
 
-export const deleteRecipes = async (recipe_id) =>
+export const deleteRecipe = async (recipe_id) =>
   await del("/recipes/", { recipe_id });
+
+export const getRecipesOnKeyword = async (keyword) =>
+  await get("/recipes", { keyword });

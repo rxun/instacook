@@ -8,12 +8,22 @@ recipes = Blueprint("recipes", __name__)
 
 @recipes.route('/', methods=['GET'])
 def get_recipes():
+    args = request.args
+    keyword = args.get('keyword')
+
+    # try:
     conn = db.connect()
-    query_results = conn.execute("SELECT * FROM Recipe LIMIT 20;").fetchall()
+    if keyword:
+        print(f"SELECT recipe_id, steps FROM Recipe WHERE steps LIKE '%{keyword}%' LIMIT 20;")
+        query_results = conn.execute(f"SELECT recipe_id, steps FROM Recipe WHERE steps LIKE '%{keyword}%' LIMIT 20;").fetchall()
+    else:
+        query_results = conn.execute("SELECT * FROM Recipe LIMIT 20;").fetchall()
     conn.close()
 
     results = [dict(obj) for obj in query_results]
     return create_response(data={'result': results})
+    # except:
+    #     return create_response(status=400)
 
 
 @recipes.route('/<id>', methods=['GET'])
@@ -35,11 +45,12 @@ def create_recipe():
     conn = db.connect()
     max_recipe_id = conn.execute(
         f'SELECT MAX(recipe_id) FROM Recipe;').fetchall()
+    new_recipe_id = max_recipe_id[0][0] + 1
     conn.execute(
-        f'INSERT INTO Recipe VALUES({max_recipe_id[0][0] + 1}, \'{steps}\');')
+        f'INSERT INTO Recipe VALUES({new_recipe_id}, \'{steps}\');')
     conn.close()
 
-    return create_response()
+    return create_response(data={'recipe_id': new_recipe_id})
 
 
 @recipes.route('/', methods=['PUT'])
