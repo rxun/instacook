@@ -31,3 +31,8 @@ export const getTopLikers = async (count) =>
   instance
     .get(`${API_URL}/account/get-top-likers?count=${count}`)
     .catch(console.error);
+
+export const getUser = async (username) =>
+  instance
+    .get(`${API_URL}/account/get-user?username=${username}`)
+    .catch(console.error);
