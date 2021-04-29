@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { getUsername, updateUsername, deleteAccount } from "../utils/api";
+import { Input, Form, Button } from "antd";
+
+import '../css/settings.scss';
 
 const Settings = (props) => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [bio, setBio] = useState("");
   const [isUsernameTaken, setIsUsernameTaken] = useState(false);
   const currentUsername = props.location.username;
 
@@ -43,24 +48,34 @@ const Settings = (props) => {
   };
 
   return (
-    <div>
+    <div className="settings">
       <h1>Account Settings</h1>
-      <form onSubmit={handleUpdateUsername}>
-        <label>
-          Update username:
-          <input type="text" onChange={handleUsernameChange} />
-        </label>
-        <input type="submit" value="Update Username" />
-      </form>
-      {username.length > 0 &&
-        (isUsernameTaken ? (
-          <p>Username is taken!</p>
-        ) : (
-          <p>Username is available!</p>
-        ))}
+      <Form layout="vertical" onFinish={handleUpdateUsername}>
+        <Form.Item label="Update Username">
+          <Input onChange={handleUsernameChange} />
+        </Form.Item>
+        {username.length > 0 &&
+          (isUsernameTaken ? (
+            <p>Username is taken!</p>
+          ) : (
+            <p>Username is available!</p>
+          ))}
+        <Form.Item label="Email">
+          <Input onChange={(e) => setEmail(e)} />
+        </Form.Item>
+        <Form.Item label="Bio">
+          <Input onChange={(e) => setEmail(e)} />
+        </Form.Item>
+        <Button type="primary" htmlType="submit">
+          Update
+        </Button>
+      </Form>
+
       <br />
       <br />
-      <button onClick={handleDeleteAccount}>Delete Account</button>
+      <Button danger onClick={handleDeleteAccount}>
+        Delete Account
+      </Button>
     </div>
   );
 };
