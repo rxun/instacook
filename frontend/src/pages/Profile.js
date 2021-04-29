@@ -22,6 +22,10 @@ const TABS = Object.freeze({
   RECIPE: 4,
 });
 
+/**
+ * TODO: Remove this and just make FeedCard customizable for
+ * profile page
+ */
 const ProfilePostPreviewCard = ({ post }) => {
   return (
     <div className="profile-post-preview-card">
@@ -40,7 +44,6 @@ const PersonalProfile = () => {
 const DefaultProfile = ({ accountId }) => {
   const params = useParams();
 
-  console.log('params', params);
   accountId = accountId !== undefined ? accountId : params.accountId;
 
   const [post, setPosts] = useState([]);
