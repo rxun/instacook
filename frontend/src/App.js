@@ -20,10 +20,10 @@ import Profile from "./pages/Profile";
 const App = () => {
   return (
     <div>
-      <Layout>
-        <Navbar />
-        <Content className="content-container">
-          <Router>
+      <Router>
+        <Layout>
+          <Navbar />
+          <Content className="content-container">
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/feed" component={Feed} />
@@ -43,9 +43,9 @@ const App = () => {
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/search" component={Search} />
             </Switch>
-          </Router>
-        </Content>
-      </Layout>
+          </Content>
+        </Layout>
+      </Router>
     </div>
   );
 };

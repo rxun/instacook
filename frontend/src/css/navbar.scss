@@ -23,9 +23,12 @@
   width: 10em;
 }
 
-.likes-btn {
+.logo-btn {
   border-width: 0px;
+  box-shadow: none;
+}
 
+.likes-btn {
   .anticon-heart {
     font-size: 20px;
     // bottom: 8px;
@@ -33,16 +36,12 @@
 }
 
 .account-btn {
-  border-width: 0px;
-
   .anticon-user {
     font-size: 20px;
   }
 }
 
 .settings-btn {
-  border-width: 0px;
-
   .anticon-setting {
     font-size: 20px;
   }

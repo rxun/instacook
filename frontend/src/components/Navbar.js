@@ -10,7 +10,7 @@ import { Header } from "antd/lib/layout/layout";
 const { Search } = Input;
 
 export default () => {
-  let history = useHistory();
+  const history = useHistory();
 
   return (
     <Header className="navbar">
@@ -19,9 +19,9 @@ export default () => {
       </a>
       <div className="toolbar">
         <Input className="search-bar" prefix={<SearchOutlined />} />
-        <Button className="likes-btn" icon={<HeartOutlined />} />
-        <Button className="account-btn" icon={<UserOutlined />} />
-        <Button className="settings-btn" icon={<SettingOutlined/>} />
+        <Button className="logo-btn likes-btn" icon={<HeartOutlined />} />
+        <Button className="logo-btn account-btn" icon={<UserOutlined />} onClick={() => history.push('/profile')} />
+        <Button className="logo-btn settings-btn" icon={<SettingOutlined/>} onClick={() => history.push('/settings')} />
       </div>
     </Header>
   );
