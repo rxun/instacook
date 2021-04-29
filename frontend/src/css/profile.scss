@@ -1,0 +1,37 @@
+@use 'colors' as *;
+
+.profile {
+  padding-top: 1em;
+
+  .user-info {
+    margin-bottom: 1.5em;
+  }
+
+  .follow-btn {
+    background: $purple;
+    color: white;
+    border-radius: 4px;
+  }
+
+  .additional-info {
+    padding-bottom: 1em;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 1em;
+  }
+
+  .username {
+    margin-left: 1em;
+  }
+
+  .profile-post-preview-card {
+    margin-bottom: 1em;
+
+    .btn {
+      border-width: 0px;
+    }
+  }
+}
