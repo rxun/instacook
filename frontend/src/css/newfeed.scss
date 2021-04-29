@@ -1,0 +1,11 @@
+@use 'colors' as *;
+
+.cards-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 2em;
+}

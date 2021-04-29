@@ -5,29 +5,40 @@ import CreatePost from "./pages/CreatePost";
 import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
 import CreateRecipe from "./pages/CreateRecipe";
-import NavHeader from "./components/NavHeader";
+import Navbar from "./components/Navbar";
 import CreateIngredient from "./pages/CreateIngredient";
 import Settings from "./pages/Settings";
 import CreateComment from "./pages/CreateComment";
 import Home from "./pages/Home";
+import NewFeed from "./pages/NewFeed";
+import Layout, { Content, Header } from "antd/lib/layout/layout";
 
 const App = () => (
   <div>
-    <NavHeader />
-    <Router>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/feed" component={Feed} />
-        <Route exact path="/createpost" component={CreatePost} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/createaccount" component={CreateAccount} />
-        <Route exact path="/create-recipe" component={CreateRecipe} />
-        <Route exact path="/create-ingredient" component={CreateIngredient} />
-        <Route exact path="/create-post" component={CreatePost} />
-        <Route exact path="/comments" component={CreateComment} />
-        <Route exact path="/settings" component={Settings} />
-      </Switch>
-    </Router>
+    <Layout>
+      <Navbar />
+      {/* <Content> */}
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/feed" component={Feed} />
+            <Route exact path="/createpost" component={CreatePost} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/createaccount" component={CreateAccount} />
+            <Route exact path="/create-recipe" component={CreateRecipe} />
+            <Route
+              exact
+              path="/create-ingredient"
+              component={CreateIngredient}
+            />
+            <Route exact path="/create-post" component={CreatePost} />
+            <Route exact path="/comments" component={CreateComment} />
+            <Route exact path="/settings" component={Settings} />
+            <Route exact path="/newfeed" component={NewFeed} />
+          </Switch>
+        </Router>
+      {/* </Content> */}
+    </Layout>
   </div>
 );
 

@@ -1,0 +1,45 @@
+@use 'colors' as *;
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  font-size: 2em;
+}
+
+.search-bar {
+  border-color: $border-gray;
+  border-radius: 2px;
+  border-width: 2px;
+  margin-right: 1em;
+  width: 10em;
+}
+
+.likes-btn {
+  border-width: 0px;
+}
+
+.account-btn {
+  border-width: 0px;
+
+  .anticon-user {
+    font-size: 20px;
+  }
+}
+
+.anticon-heart {
+  font-size: 20px;
+  // bottom: 8px;
+}
+
+.title-link, .title-link:hover, .title-link::selection {
+  color: $text-black;
+}
