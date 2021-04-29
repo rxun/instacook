@@ -25,6 +25,11 @@
 
 .likes-btn {
   border-width: 0px;
+
+  .anticon-heart {
+    font-size: 20px;
+    // bottom: 8px;
+  }
 }
 
 .account-btn {
@@ -35,11 +40,16 @@
   }
 }
 
-.anticon-heart {
-  font-size: 20px;
-  // bottom: 8px;
+.settings-btn {
+  border-width: 0px;
+
+  .anticon-setting {
+    font-size: 20px;
+  }
 }
 
-.title-link, .title-link:hover, .title-link::selection {
+.title-link,
+.title-link:hover,
+.title-link::selection {
   color: $text-black;
 }
