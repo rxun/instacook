@@ -12,12 +12,15 @@ import CreateComment from "./pages/CreateComment";
 import Home from "./pages/Home";
 import NewFeed from "./pages/NewFeed";
 import Layout, { Content, Header } from "antd/lib/layout/layout";
+import Search from "./pages/Search";
+
+import './css/app.scss'
 
 const App = () => (
   <div>
     <Layout>
       <Navbar />
-      {/* <Content> */}
+      <Content className="content-container">
         <Router>
           <Switch>
             <Route exact path="/" component={Home} />
@@ -35,9 +38,10 @@ const App = () => (
             <Route exact path="/comments" component={CreateComment} />
             <Route exact path="/settings" component={Settings} />
             <Route exact path="/newfeed" component={NewFeed} />
+            <Route exact path="/search" component={Search} />
           </Switch>
         </Router>
-      {/* </Content> */}
+      </Content>
     </Layout>
   </div>
 );

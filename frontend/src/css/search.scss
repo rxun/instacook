@@ -1,0 +1,21 @@
+@use 'colors' as *;
+
+$search-purple: #6558f5;
+
+.search {
+  background-color: white;
+  padding-left: 5%;
+  width: 90%;
+
+  .ant-tabs-tab:hover {
+    color: $search-purple;
+  }
+
+  .ant-tabs-ink-bar {
+    background: $search-purple;
+  }
+
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: $search-purple;
+  }
+}

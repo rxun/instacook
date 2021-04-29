@@ -20,6 +20,10 @@ const Details = ({ recipe, ingredients }) => {
   );
 };
 
+/**
+ * TODO: Fetch user, ingredients, and comments and display
+ * in Details component
+ */
 export default ({ post }) => {
   const [expanded, setExpanded] = useState(false);
   const [user, setUser] = useState();
