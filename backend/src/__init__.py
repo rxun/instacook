@@ -21,8 +21,15 @@ def init_connection_engine():
             username=os.environ.get('MYSQL_USER'),
             password=os.environ.get('MYSQL_PASSWORD'),
             database=os.environ.get('MYSQL_DB'),
-            host=os.environ.get('MYSQL_HOST')
-        )
+            host=os.environ.get('MYSQL_HOST'),
+        ),
+        # connect_args={
+        #     'ssl': {
+        #         'ssl_cert': os.environ.get('MYSQL_CLIENT_CERT_PEM'),
+        #         'ssl_key': os.environ.get('MYSQL_CLIENT_KEY_PEM'),
+        #         'ssl_ca': os.environ.get('MYSQL_SERVER_CA_PEM')
+        #     }
+        # }
     )
 
     return pool
