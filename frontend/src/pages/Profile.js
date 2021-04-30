@@ -98,6 +98,9 @@ const DefaultProfile = ({ accountId }) => {
     } else {
       await unfollow(user_id, accountId);
     }
+
+    const followers = await getFollowers(accountId);
+    setNumFollowers(followers.length);
   };
 
   return (
