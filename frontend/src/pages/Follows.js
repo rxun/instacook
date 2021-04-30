@@ -11,7 +11,7 @@ const FollowCard = ({ user }) => {
     <div className="card">
         <div className="header">
           {/* <div className="icon"></div> */}
-          <Button className="user-icon" icon={<Image preview={false} src={user.profile_picture} />} />
+          <Button className="user-icon" width="75px" height="75px" icon={<Image preview={false} src={user.profile_picture} />} />
           <div className="name">{user.username}</div>
         </div>
       </div>
@@ -21,12 +21,16 @@ const FollowCard = ({ user }) => {
 export default ({}) => {
   const [following, setFollowing] = useState([]);
   const [followers, setFollowers] = useState([]);
+  const [followView, setFollowView] = useState("following");
 
   useEffect(() => {
     async function fetchData() {
       setFollowing(await getFollowing(100));
       console.log(following);
       setFollowers(await getFollowers(100));
+      console.log(followers);
+
+    //   TODO: fix the bug with followers page icon
     }
 
     fetchData();
@@ -34,10 +38,16 @@ export default ({}) => {
 
   return (
     <div>
+      <button onClick={() => setFollowView("following")}>
+        Following
+      </button>
+      <button onClick={() => setFollowView("followers")}>
+        Followers
+      </button>
       <div className="cards-container">
         <List
           grid={{ gutter: 16, column: 1 }}
-          dataSource={following || []}
+          dataSource={(followView === 'following' ? following : followers) || []}
           renderItem={(item) => {
             return (
               <List.Item>
