@@ -53,14 +53,17 @@ export const getPost = async (post_id) =>
 export const updatePost = async (post_id, title, picture, description) =>
   await put("/post/", { post_id, title, picture, description });
 
-export const deletePost = async (post_id) =>
-  await del("/post/", {post_id});
+export const deletePost = async (post_id) => await del("/post/", { post_id });
 
-export const getFollowing = async(account_id) =>
-  await get(`/follows/following/${account_id}`).then((res) => res.result.result);
+export const getFollowing = async (account_id) =>
+  await get(`/follows/following/${account_id}`).then(
+    (res) => res.result.result
+  );
 
-export const getFollowers = async(account_id) =>
-  await get(`/follows/followers/${account_id}`).then((res) => res.result.result);
+export const getFollowers = async (account_id) =>
+  await get(`/follows/followers/${account_id}`).then(
+    (res) => res.result.result
+  );
 
 export const getRecipes = async () =>
   await get("/recipes/").then((res) => res.result.result);
@@ -198,3 +201,15 @@ export const likePost = async (account_id, post_id) =>
 
 export const unlikePost = async (account_id, post_id) =>
   await del(`/likes/`, { account_id, post_id });
+
+export const getAccountById = async (account_id) =>
+  get(`/account/${account_id}`).then((res) => res.result.result[0]);
+
+export const follow = async (account1_id, account2_id) =>
+  await post("/follows/", { account1_id, account2_id });
+
+export const unfollow = async (account1_id, account2_id) =>
+  await del("/follows/", { account1_id, account2_id });
+
+export const isFollowing = async (account1_id, account2_id) =>
+  await get("/follows/", { account1_id, account2_id });
