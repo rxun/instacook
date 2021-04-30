@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { getUsername, updateUsername, deleteAccount } from "../utils/api";
 import { Input, Form, Button } from "antd";
+import { useAuth } from "../utils/useAuth";
 
-import '../css/settings.scss';
+import "../css/settings.scss";
 
-const Settings = (props) => {
+const Settings = () => {
+  const { user } = useAuth();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
   const [isUsernameTaken, setIsUsernameTaken] = useState(false);
-  const currentUsername = props.location.username;
 
   let history = useHistory();
 
@@ -24,14 +25,12 @@ const Settings = (props) => {
     setUsername(e.target.value);
   };
 
-  const handleUpdateUsername = async (e) => {
-    e.preventDefault();
-
+  const handleUpdateUsername = async () => {
     if (isUsernameTaken) {
       alert("Username is taken!");
     } else {
       const res = await updateUsername({
-        oldUsername: currentUsername,
+        oldUsername: user.username,
         newUsername: username,
       });
       if (res) {
@@ -42,7 +41,7 @@ const Settings = (props) => {
   };
 
   const handleDeleteAccount = async () => {
-    await deleteAccount({ username: currentUsername });
+    await deleteAccount({ username: user.username });
     alert("Successfully deleted account!");
     history.push("/login");
   };
