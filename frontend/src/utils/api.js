@@ -36,6 +36,9 @@ export const feed = async (accountInfo) =>
 export const createPost = async (title, picture, description, account_id) =>
   await post("/post/", {title, picture, description, account_id} );
 
+export const getPostsByAccount = async (account_id) =>
+  await get(`/post/by/${account_id}`).then((res) => res.result.result);
+
 export const getPosts = async () => 
   await get("/post/").then((res) => res.result.result);
 
