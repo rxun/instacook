@@ -214,5 +214,6 @@ export const follow = async (account1_id, account2_id) =>
 export const unfollow = async (account1_id, account2_id) =>
   await del("/follows/", { account1_id, account2_id });
 
-export const isFollowing = async (account1_id, account2_id) =>
-  await get("/follows/", { account1_id, account2_id });
+export const getFollow = async (account1_id, account2_id) =>
+  await get("/follows/", { account1_id, account2_id }).then(res => res.result.result)
+

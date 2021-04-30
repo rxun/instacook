@@ -54,9 +54,9 @@ def follow():
 
 @follows.route('/', methods=['DELETE'])
 def unfollow():
-    data = request.json
-    follower = data.get('account1_id')
-    following = data.get('account2_id')
+    args = request.args
+    follower = args.get('account1_id')
+    following = args.get('account2_id')
 
     conn = db.connect()
     conn.execute(
@@ -64,3 +64,43 @@ def unfollow():
     conn.close()
 
     return create_response()
+
+
+@follows.route('/', methods=['GET'])
+def get_follows():
+    args = request.args
+    follower = args.get('account1_id')
+    following = args.get('account2_id')
+
+    conn = db.connect()
+    query_results = None
+
+    if follower and following:
+        query_results = conn.execute(f'''
+        SELECT *
+        FROM Follows
+        WHERE account1_id = {follower} AND account2_id = {following};
+        ''').fetchall()
+    elif follower:
+        query_results = conn.execute(f'''
+        SELECT *
+        FROM Follows
+        WHERE account1_id = {follower};
+        ''').fetchall()
+    elif following:
+        query_results = conn.execute(f'''
+        SELECT *
+        FROM Follows
+        WHERE account2_id = {follower};
+        ''').fetchall()
+    else:
+        query_results = conn.execute(f'''
+        SELECT *
+        FROM Follows
+        LIMIT 20;
+        ''').fetchall()
+
+    conn.close()
+
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results})
