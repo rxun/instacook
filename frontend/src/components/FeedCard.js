@@ -45,7 +45,7 @@ const Details = ({ recipe, ingredients }) => {
  * TODO: Fetch user, ingredients, and comments and display
  * in Details component
  */
-export default ({ post, viewDetails }) => {
+export default ({ post, viewDetails, hideHeader }) => {
   const history = useHistory();
   const { user } = useAuth();
 
@@ -111,26 +111,32 @@ export default ({ post, viewDetails }) => {
   return (
     <div className="card">
       {userPosted && (
-        <div className="header">
-          <div className="user-info">
-            <Button
-              className="user-icon"
-              onClick={() => history.push(`/profile/${userPosted.account_id}`)}
-            >
-              <Image
-                className="profile-pic"
-                preview={false}
-                src={userPosted.profile_picture}
-              />
-            </Button>
-            <div className="name">{userPosted.username}</div>
-          </div>
-          {viewDetails && (
-            <Button
-              onClick={() => history.push(`/post/${post.post_id}`)}
-              className="like-btn"
-              icon={<ArrowRightOutlined />}
-            />
+        <div>
+          {!hideHeader && (
+            <div className="header">
+              <div className="user-info">
+                <Button
+                  className="user-icon"
+                  onClick={() =>
+                    history.push(`/profile/${userPosted.account_id}`)
+                  }
+                >
+                  <Image
+                    className="profile-pic"
+                    preview={false}
+                    src={userPosted.profile_picture}
+                  />
+                </Button>
+                <div className="name">{userPosted.username}</div>
+              </div>
+              {viewDetails && (
+                <Button
+                  onClick={() => history.push(`/post/${post.post_id}`)}
+                  className="like-btn"
+                  icon={<ArrowRightOutlined />}
+                />
+              )}
+            </div>
           )}
         </div>
       )}

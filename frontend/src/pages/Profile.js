@@ -23,6 +23,7 @@ import {
 import imagePlaceholder from "../img/image-placeholder.png";
 import { useAuth } from "../utils/useAuth";
 import { unfollow } from "./../utils/api";
+import FeedCard from "../components/FeedCard";
 
 const { TabPane } = Tabs;
 
@@ -130,7 +131,7 @@ const DefaultProfile = ({ accountId }) => {
         renderItem={(item) => {
           return (
             <List.Item>
-              <ProfilePostPreviewCard post={item} />
+              <FeedCard hideHeader post={item} />
             </List.Item>
           );
         }}
