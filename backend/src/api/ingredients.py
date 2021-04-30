@@ -47,6 +47,21 @@ def get_ingredient_by_id(id):
     return create_response(data={'result': results})
 
 
+@ingredients.route('/recipe/<id>', methods=['GET'])
+def get_ingredient_by_recipe_id(id):
+    conn = db.connect()
+    query_results = conn.execute(
+        f'''
+        SELECT ingredient_id, name, type 
+        FROM (Ingredient I NATURAL JOIN RecipeContains RC) 
+            JOIN Recipe R ON RC.recipe_id = R.recipe_id
+        WHERE R.recipe_id = {id};'''
+    ).fetchall();
+    conn.close();
+
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results});
+
 @ingredients.route('/', methods=['POST'])
 def create_ingredient():
     data = request.json

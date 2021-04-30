@@ -17,6 +17,7 @@
 .user-icon {
   border-width: 0px;
   margin-right: 1em;
+  box-shadow: none;
 }
 
 .like-btn {
@@ -39,6 +40,7 @@
 
 .details {
   border-width: 0px;
+  box-shadow: none;
 }
 
 .details::selection,
@@ -50,4 +52,21 @@
 .steps-container {
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
+}
+
+.ingredients-container {
+  max-height: 8em;
+}
+
+.steps-container {
+  height: 14em;
+}
+
+.steps-title, .ingredients-title {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: white;
 }
