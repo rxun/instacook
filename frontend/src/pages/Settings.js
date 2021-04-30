@@ -5,6 +5,7 @@ import {
   updateUsername,
   deleteAccount,
   updateAccount,
+  getUserById,
 } from "../utils/api";
 import { Input, Form, Button, message } from "antd";
 import { useAuth } from "../utils/useAuth";
@@ -12,13 +13,13 @@ import { useAuth } from "../utils/useAuth";
 import "../css/settings.scss";
 
 const Settings = () => {
-  const { user, logout } = useAuth();
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [bio, setBio] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [profilePic, setProfilePic] = useState("");
+  const { user, setUser, logout } = useAuth();
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
+  const [bio, setBio] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [profilePic, setProfilePic] = useState();
   const [isUsernameTaken, setIsUsernameTaken] = useState(false);
 
   const history = useHistory();
@@ -66,6 +67,7 @@ const Settings = () => {
 
     if (res && res.success) {
       message.success("Successfully updated account!");
+      setUser(await getUserById(user.account_id));
     } else {
       message.error("Failed to update account!");
     }
@@ -91,7 +93,8 @@ const Settings = () => {
             onChange={handleUsernameChange}
           />
         </Form.Item>
-        {username.length > 0 &&
+        {username &&
+          username.length > 0 &&
           (isUsernameTaken ? (
             <p>Username is taken!</p>
           ) : (
@@ -100,32 +103,32 @@ const Settings = () => {
         <Form.Item label="Email">
           <Input
             defaultValue={user && user.email}
-            onChange={(e) => setEmail(e)}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Item>
         <Form.Item label="First Name">
           <Input
             defaultValue={user && user.first_name}
-            onChange={(e) => setFirstName(e)}
+            onChange={(e) => setFirstName(e.target.value)}
           />
         </Form.Item>
         <Form.Item label="Last Name">
           <Input
             defaultValue={user && user.last_name}
-            onChange={(e) => setLastName(e)}
+            onChange={(e) => setLastName(e.target.value)}
           />
         </Form.Item>
         <Form.Item label="Profile Picture">
           <Input
             defaultValue={user && user.profile_picture}
-            onChange={(e) => setProfilePic(e)}
+            onChange={(e) => setProfilePic(e.target.value)}
           />
         </Form.Item>
         <Form.Item label="Bio">
           <Input.TextArea
             autoSize={{ minRows: 3, maxRows: 5 }}
             defaultValue={user && user.bio}
-            onChange={(e) => setBio(e)}
+            onChange={(e) => setBio(e.target.value)}
           />
         </Form.Item>
         <Button type="primary" htmlType="submit">
