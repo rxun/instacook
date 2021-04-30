@@ -1,19 +1,27 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { getUsername, updateUsername, deleteAccount } from "../utils/api";
-import { Input, Form, Button } from "antd";
+import {
+  getUsername,
+  updateUsername,
+  deleteAccount,
+  updateAccount,
+} from "../utils/api";
+import { Input, Form, Button, message } from "antd";
 import { useAuth } from "../utils/useAuth";
 
 import "../css/settings.scss";
 
 const Settings = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [profilePic, setProfilePic] = useState("");
   const [isUsernameTaken, setIsUsernameTaken] = useState(false);
 
-  let history = useHistory();
+  const history = useHistory();
 
   const handleUsernameChange = async (e) => {
     const res = await getUsername(e.target.value);
@@ -46,10 +54,37 @@ const Settings = () => {
     history.push("/login");
   };
 
+  const handleUpdateUser = async () => {
+    const res = await updateAccount(user && user.account_id, {
+      username,
+      email,
+      first_name: firstName,
+      last_name: lastName,
+      bio,
+      profile_picture: profilePic,
+    });
+
+    if (res && res.success) {
+      message.success("Successfully updated account!");
+    } else {
+      message.error("Failed to update account!");
+    }
+  };
+
   return (
     <div className="settings">
-      <h1>Account Settings</h1>
-      <Form layout="vertical" onFinish={handleUpdateUsername}>
+      <div className="header">
+        <h1>Account Settings</h1>
+        <Button
+          onClick={async () => {
+            await logout();
+            history.push("/");
+          }}
+        >
+          Logout
+        </Button>
+      </div>
+      <Form layout="vertical" onFinish={handleUpdateUser}>
         <Form.Item label="Update Username">
           <Input
             defaultValue={user && user.username}
@@ -71,19 +106,19 @@ const Settings = () => {
         <Form.Item label="First Name">
           <Input
             defaultValue={user && user.first_name}
-            onChange={(e) => setEmail(e)}
+            onChange={(e) => setFirstName(e)}
           />
         </Form.Item>
         <Form.Item label="Last Name">
           <Input
             defaultValue={user && user.last_name}
-            onChange={(e) => setEmail(e)}
+            onChange={(e) => setLastName(e)}
           />
         </Form.Item>
         <Form.Item label="Profile Picture">
           <Input
             defaultValue={user && user.profile_picture}
-            onChange={(e) => setEmail(e)}
+            onChange={(e) => setProfilePic(e)}
           />
         </Form.Item>
         <Form.Item label="Bio">

@@ -2,4 +2,9 @@
 
 .settings {
   width: 50%;
+
+  .header {
+    display:flex;
+    justify-content: space-between;
+  }
 }

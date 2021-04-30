@@ -12,7 +12,6 @@ const { TabPane } = Tabs;
 const TABS = Object.freeze({
   LIKES: 1,
   RECOMMENDATIONS: 2,
-  FUN: 3,
 });
 
 const PostList = ({ posts }) => (
@@ -56,7 +55,6 @@ const FollowCard = ({ user }) => {
 };
 
 const Recommendations = ({ followedPopPosts, popPosts, popUsers }) => {
-  console.log(followedPopPosts);
   return (
     <div className="rec">
       <Card
@@ -133,7 +131,6 @@ export default ({}) => {
       >
         <TabPane tab="Likes" key={TABS.LIKES}></TabPane>
         <TabPane tab="Recommendations" key={TABS.RECOMMENDATIONS}></TabPane>
-        <TabPane tab="Fun" key={TABS.FUN}></TabPane>
       </Tabs>
       {tab === TABS.LIKES && <PostList posts={likedPosts} />}
       {tab === TABS.RECOMMENDATIONS && (

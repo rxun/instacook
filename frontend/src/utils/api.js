@@ -228,4 +228,8 @@ export const getFollow = async (account1_id, account2_id) =>
 export const getLikedPostsByUser = async (account_id) =>
   await get(`/post/likedby/${account_id}`).then((res) => res.result.result);
 
-  export const getBestRecsByUser = async (account_id) => await get(`/account/getbestrecs`, {account_id}).then(res => res.result)
+export const getBestRecsByUser = async (account_id) =>
+  await get(`/account/getbestrecs`, { account_id }).then((res) => res.result);
+
+export const updateAccount = async (account_id, fields) =>
+  await put(`/account/`, { ...fields, account_id });

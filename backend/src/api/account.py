@@ -199,3 +199,38 @@ def get_best_recs():
     pop_users = [dict(obj) for obj in pop_users_query_results]
 
     return create_response(data={'followed_pop_posts': followed_pop_posts, 'pop_posts': pop_posts, 'pop_users': pop_users})
+
+
+@account.route('/', methods=['PUT'])
+def update_account():
+    data = request.json
+    account_id = data.get('account_id')
+
+    conn = db.connect()
+    query_results = conn.execute(f'''
+    SELECT * FROM Account A WHERE A.account_id = {account_id}
+    ''').fetchall();
+    account = dict(query_results[0])
+
+    username = data.get('username', account['username'])
+    email = data.get('email', account['email'])
+    first_name = data.get('first_name', account['first_name'])
+    last_name = data.get('last_name', account['last_name'])
+    bio = data.get('bio', account['bio'])
+    profile_picture = data.get('profile_picture', account['profile_picture'])
+
+    conn.execute(f'''
+    UPDATE Account
+    SET
+        username = '{username}',
+        email = '{email}',
+        first_name = '{first_name}',
+        last_name = '{last_name}',
+        bio = '{bio}',
+        profile_picture = '{profile_picture}'
+    WHERE account_id = {account_id};
+    ''');
+
+    conn.close();
+
+    return create_response();
