@@ -1,9 +1,10 @@
 @use 'colors' as *;
 
 @font-face {
-  font-family: 'Blue-Vinyl-Regular';
-  src: url('fonts/Fontspring-DEMO-blue_vinyl_regular_ps_ot.otf') format('otf'),
-       url('fonts/fontspring-demo-blue_vinyl_regular_ps_ot-webfont.woff') format('woff');
+  font-family: "Blue-Vinyl-Regular";
+  src: url("fonts/Fontspring-DEMO-blue_vinyl_regular_ps_ot.otf") format("otf"),
+    url("fonts/fontspring-demo-blue_vinyl_regular_ps_ot-webfont.woff")
+      format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -21,20 +22,18 @@
 
 .title {
   font-size: 2em;
-  font-family: 'Blue-Vinyl-Regular';
-}
-
-.search-bar {
-  border-color: $border-gray;
-  border-radius: 2px;
-  border-width: 2px;
-  margin-right: 1em;
-  width: 10em;
+  font-family: "Blue-Vinyl-Regular";
 }
 
 .logo-btn {
   border-width: 0px;
   box-shadow: none;
+}
+
+.search-btn {
+  .anticon-search {
+    font-size: 20px;
+  }
 }
 
 .likes-btn {

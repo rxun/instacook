@@ -17,3 +17,16 @@
     color: $purple;
   }
 }
+
+.search-bar {
+  border-color: $border-gray;
+  border-radius: 2px;
+  border-width: 2px;
+  margin-right: 1em;
+  width: 10em;
+}
+
+.search-post-container {
+  height: 400px;
+  width: 200px;
+}

@@ -1,5 +1,10 @@
 import { Button, Input } from "antd";
-import { SearchOutlined, HeartOutlined, UserOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  HeartOutlined,
+  UserOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import Form from "antd/lib/form/Form";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
@@ -18,10 +23,22 @@ export default () => {
         <div className="title">InstaCook</div>
       </a>
       <div className="toolbar">
-        <Input className="search-bar" prefix={<SearchOutlined />} />
+        <Button
+          className="logo-btn search-btn"
+          icon={<SearchOutlined />}
+          onClick={() => history.push("/search")}
+        />
         <Button className="logo-btn likes-btn" icon={<HeartOutlined />} />
-        <Button className="logo-btn account-btn" icon={<UserOutlined />} onClick={() => history.push('/profile')} />
-        <Button className="logo-btn settings-btn" icon={<SettingOutlined/>} onClick={() => history.push('/settings')} />
+        <Button
+          className="logo-btn account-btn"
+          icon={<UserOutlined />}
+          onClick={() => history.push("/profile")}
+        />
+        <Button
+          className="logo-btn settings-btn"
+          icon={<SettingOutlined />}
+          onClick={() => history.push("/settings")}
+        />
       </div>
     </Header>
   );
