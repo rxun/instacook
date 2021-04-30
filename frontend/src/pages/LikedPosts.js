@@ -54,31 +54,14 @@ const FollowCard = ({ user }) => {
   );
 };
 
-const Recommendations = ({ followedPopPosts, popPosts, popUsers }) => {
+const Recommendations = ({ bestPosts, popUsers }) => {
   return (
     <div className="rec">
-      <Card
-        className="rec-card"
-        title="Most Popular Posts by People You Follow"
-      >
+      <Card className="rec-card" title="Suggested Posts">
         <List
           itemLayout="vertical"
           grid={{ gutter: 16, column: 1 }}
-          dataSource={followedPopPosts || []}
-          renderItem={(item) => {
-            return (
-              <List.Item>
-                <FeedCard post={item} viewDetails />
-              </List.Item>
-            );
-          }}
-        />
-      </Card>
-      <Card className="rec-card" title="Most Popular Posts">
-        <List
-          itemLayout="vertical"
-          grid={{ gutter: 16, column: 1 }}
-          dataSource={popPosts || []}
+          dataSource={bestPosts || []}
           renderItem={(item) => {
             return (
               <List.Item>
@@ -135,8 +118,7 @@ export default ({}) => {
       {tab === TABS.LIKES && <PostList posts={likedPosts} />}
       {tab === TABS.RECOMMENDATIONS && (
         <Recommendations
-          followedPopPosts={bestRecs ? bestRecs.followed_pop_posts : []}
-          popPosts={bestRecs ? bestRecs.pop_posts : []}
+          bestPosts={bestRecs ? bestRecs.best_posts : []}
           popUsers={bestRecs ? bestRecs.pop_users : []}
         />
       )}

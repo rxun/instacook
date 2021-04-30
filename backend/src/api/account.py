@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from src.core import create_response
 from src import db
+import sqlalchemy
 
 account = Blueprint("account", __name__)
 
@@ -169,19 +170,18 @@ def get_best_recs():
     account_id = args.get('account_id')
 
     conn = db.connect()
-    conn.execute(f'''
-    CALL GetBest({account_id});
-    ''')
+    # raw_conn = db.engine.raw_connection()
 
-    followed_pop_posts_query_results = conn.execute(f'''
+    call_query_results = conn.execute(f'''
+        CALL GetBest({account_id}, @does_follow);
+    ''').fetchall();
+
+    call_results = [dict(obj) for obj in call_query_results]
+    print(call_results)
+
+    best_posts_query_results = conn.execute(f'''
     SELECT DISTINCT P.post_id, P.title, P.description, P.picture, P.account_id, P.recipe_id
-    FROM FollowedAccountsPopularPosts FA NATURAL JOIN Post P
-    LIMIT 15;
-    ''').fetchall()
-
-    pop_posts_query_results = conn.execute(f'''
-    SELECT P.post_id, P.title, P.description, P.picture, P.account_id, P.recipe_id
-    FROM PopularPosts PP NATURAL JOIN Post P
+    FROM BestPosts BP NATURAL JOIN Post P
     LIMIT 15;
     ''').fetchall()
 
@@ -193,12 +193,10 @@ def get_best_recs():
 
     conn.close()
 
-    followed_pop_posts = [dict(obj)
-                          for obj in followed_pop_posts_query_results]
-    pop_posts = [dict(obj) for obj in pop_posts_query_results]
+    best_posts = [dict(obj) for obj in best_posts_query_results];
     pop_users = [dict(obj) for obj in pop_users_query_results]
 
-    return create_response(data={'followed_pop_posts': followed_pop_posts, 'pop_posts': pop_posts, 'pop_users': pop_users})
+    return create_response(data={'best_posts': best_posts, 'pop_users': pop_users})
 
 
 @account.route('/', methods=['PUT'])
