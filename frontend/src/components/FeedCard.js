@@ -152,7 +152,11 @@ export default ({ post, viewDetails, hideHeader }) => {
             <div className="likes">{numOfLikes} likes</div>
           </div>
           <div className="action">
-            <Button className="logo-btn" icon={<MessageOutlined />} />
+            <Button
+              className="logo-btn"
+              icon={<MessageOutlined />}
+              onClick={() => history.push(`/post/${post.post_id}`)}
+            />
             <div className="comments">{numOfComments} comments</div>
           </div>
         </div>
