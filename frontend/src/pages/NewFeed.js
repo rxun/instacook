@@ -4,7 +4,6 @@ import FeedCard from "../components/FeedCard";
 
 import "../css/newfeed.scss";
 import { getPosts } from "../utils/api";
-import Feed from "./Feed";
 
 export default ({}) => {
   const [posts, setPosts] = useState([]);

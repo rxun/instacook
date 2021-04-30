@@ -19,6 +19,7 @@ import PostDetails from "./pages/PostDetails";
 import "./css/app.scss";
 import Profile from "./pages/Profile";
 import { ProvideAuth } from "./utils/useAuth";
+import LikedPosts from "./pages/LikedPosts";
 
 const App = () => {
   return (
@@ -47,6 +48,7 @@ const App = () => {
               <Route exact path="/search" component={Search} />
               <Route exact path="/post/:id" component={PostDetails} />
               <Route exact path="/follows" component={Follows} />
+              <Route exact path="/liked-posts" component={LikedPosts}/>
             </Switch>
           </Content>
         </Layout>

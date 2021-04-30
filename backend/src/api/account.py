@@ -161,3 +161,41 @@ def get_account_by_id(id):
 
     results = [dict(obj) for obj in query_results]
     return create_response(data={'result': results})
+
+
+@account.route('/getbestrecs', methods=['GET'])
+def get_best_recs():
+    args = request.args
+    account_id = args.get('account_id')
+
+    conn = db.connect()
+    conn.execute(f'''
+    CALL GetBest({account_id});
+    ''')
+
+    followed_pop_posts_query_results = conn.execute(f'''
+    SELECT DISTINCT P.post_id, P.title, P.description, P.picture, P.account_id, P.recipe_id
+    FROM FollowedAccountsPopularPosts FA NATURAL JOIN Post P
+    LIMIT 15;
+    ''').fetchall()
+
+    pop_posts_query_results = conn.execute(f'''
+    SELECT P.post_id, P.title, P.description, P.picture, P.account_id, P.recipe_id
+    FROM PopularPosts PP NATURAL JOIN Post P
+    LIMIT 15;
+    ''').fetchall()
+
+    pop_users_query_results = conn.execute(f'''
+    SELECT account_id, email, first_name, last_name, bio, profile_picture, username
+    FROM PopularUsers PU NATURAL JOIN Account A
+    LIMIT 15;
+    ''').fetchall()
+
+    conn.close()
+
+    followed_pop_posts = [dict(obj)
+                          for obj in followed_pop_posts_query_results]
+    pop_posts = [dict(obj) for obj in pop_posts_query_results]
+    pop_users = [dict(obj) for obj in pop_users_query_results]
+
+    return create_response(data={'followed_pop_posts': followed_pop_posts, 'pop_posts': pop_posts, 'pop_users': pop_users})

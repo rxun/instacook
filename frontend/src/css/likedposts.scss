@@ -1,0 +1,39 @@
+@use 'colors' as *;
+
+.liked-posts {
+  background-color: white;
+  padding-left: 5%;
+  width: 90%;
+
+  .ant-tabs-tab:hover {
+    color: $purple;
+  }
+
+  .ant-tabs-ink-bar {
+    background: $purple;
+  }
+
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: $purple;
+  }
+}
+
+.rec-card {
+  width: 33%;
+  height: 80vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.rec {
+  display: flex;
+  flex-direction: row;
+}
+
+.ant-card-head {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 2;
+  background-color: white;
+}

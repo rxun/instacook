@@ -32,7 +32,13 @@ const del = async (url, params) =>
 export const feed = async (accountInfo) =>
   instance.get(`${API_URL}/post/feed`, accountInfo).catch(console.error);
 
-export const createPost = async (title, picture, description, recipe_id, account_id) =>
+export const createPost = async (
+  title,
+  picture,
+  description,
+  recipe_id,
+  account_id
+) =>
   await post("/post/", { title, picture, description, recipe_id, account_id });
 
 export const getPostsByAccount = async (account_id) =>
@@ -215,5 +221,11 @@ export const unfollow = async (account1_id, account2_id) =>
   await del("/follows/", { account1_id, account2_id });
 
 export const getFollow = async (account1_id, account2_id) =>
-  await get("/follows/", { account1_id, account2_id }).then(res => res.result.result)
+  await get("/follows/", { account1_id, account2_id }).then(
+    (res) => res.result.result
+  );
 
+export const getLikedPostsByUser = async (account_id) =>
+  await get(`/post/likedby/${account_id}`).then((res) => res.result.result);
+
+  export const getBestRecsByUser = async (account_id) => await get(`/account/getbestrecs`, {account_id}).then(res => res.result)

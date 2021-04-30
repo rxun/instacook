@@ -30,7 +30,11 @@ export default () => {
           icon={<SearchOutlined />}
           onClick={() => history.push("/search")}
         />
-        <Button className="logo-btn likes-btn" icon={<HeartOutlined />} />
+        <Button
+          className="logo-btn likes-btn"
+          icon={<HeartOutlined />}
+          onClick={() => history.push("/liked-posts")}
+        />
         <Button
           className="logo-btn account-btn"
           icon={<UserOutlined />}

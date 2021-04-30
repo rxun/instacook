@@ -154,7 +154,7 @@ export default ({ post, viewDetails }) => {
       <Button className="details" onClick={() => setExpanded(!expanded)}>
         <div className="card-title-section">
           <div className="card-title">Title</div>
-          <div>{post.title}</div>
+          <div className="card-title-content">{post.title}</div>
         </div>
         {/* <div className="caption"></div> */}
       </Button>

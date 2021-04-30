@@ -156,6 +156,22 @@ def get_likes_from_post_id(id):
     return create_response(data={'result': results});
 
 
+@post.route('/likedby/<id>', methods=['GET'])
+def get_liked_posts(id):
+    conn = db.connect()
+
+    query_results = conn.execute(f'''
+    SELECT P.post_id, P.title, P.description, P.picture, P.account_id, P.recipe_id
+    FROM (Account A NATURAL JOIN Likes L) JOIN Post P on L.post_id = P.post_id
+    WHERE A.account_id = {id}
+    ''').fetchall();
+
+    conn.close();
+
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results});
+
+
 @post.route('/comments/<id>', methods=['GET'])
 def get_comments_from_post_id(id):
     args = request.args
@@ -180,3 +196,5 @@ def get_comments_from_post_id(id):
     conn.close()
     results = [dict(obj) for obj in query_results]
     return create_response(data={'result': results});
+
+
