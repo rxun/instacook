@@ -112,7 +112,7 @@ def get_user():
     username = request.args.get('username')
 
     conn = db.connect()
-    query = 'SELECT email, username, account_id FROM Account WHERE username LIKE "%%{}%%";'.format(
+    query = 'SELECT email, username, password, account_id FROM Account WHERE username LIKE "%%{}%%";'.format(
         username)
     query_results = conn.execute(query).fetchall()
     conn.close()
@@ -124,9 +124,11 @@ def get_user():
             data[i] = {
                 "email": result[0],
                 "username": result[1],
-                "account_id": result[2]
+                "password": result[2],
+                "account_id": result[3]
             }
             i += 1
+        print(data)
         return create_response(status=200, data=data)
     return create_response(status=400)
 
@@ -161,8 +163,8 @@ def get_account_by_id(id):
     conn.close()
 
     results = [dict(obj) for obj in query_results]
+    print(results)
     return create_response(data={'result': results})
-
 
 @account.route('/getbestrecs', methods=['GET'])
 def get_best_recs():

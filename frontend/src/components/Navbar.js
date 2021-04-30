@@ -3,6 +3,7 @@ import {
   SearchOutlined,
   HeartOutlined,
   UserOutlined,
+  FormOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 import Form from "antd/lib/form/Form";
@@ -51,6 +52,12 @@ export default () => {
               history.push("/profile");
             }
           }}
+        />
+        <Button
+          className="logo-btn account-btn"
+          icon={<FormOutlined />}
+          onClick={() => history.push("/createpost")
+          }
         />
         <Button
           className="logo-btn settings-btn"
