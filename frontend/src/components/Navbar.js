@@ -21,7 +21,7 @@ export default () => {
 
   return (
     <Header className="navbar">
-      <a className="title-link" href="/newfeed">
+      <a className="title-link" href="/">
         <div className="title">InstaCook</div>
       </a>
       <div className="toolbar">
@@ -33,7 +33,13 @@ export default () => {
         <Button
           className="logo-btn likes-btn"
           icon={<HeartOutlined />}
-          onClick={() => history.push("/liked-posts")}
+          onClick={() => {
+            if (!user) {
+              history.push("/login");
+            } else {
+              history.push("/liked-posts");
+            }
+          }}
         />
         <Button
           className="logo-btn account-btn"
@@ -49,7 +55,13 @@ export default () => {
         <Button
           className="logo-btn settings-btn"
           icon={<SettingOutlined />}
-          onClick={() => history.push("/settings")}
+          onClick={() => {
+            if (!user) {
+              history.push("/login");
+            } else {
+              history.push("/settings");
+            }
+          }}
         />
       </div>
     </Header>

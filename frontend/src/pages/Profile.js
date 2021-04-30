@@ -74,7 +74,7 @@ const DefaultProfile = ({ accountId }) => {
       setAccount(await getAccountById(accountId));
       setPosts(await getPostsByAccount(accountId));
 
-      const followRes = await getFollow(user.account_id, accountId);
+      const followRes = await getFollow(user && user.account_id, accountId);
       setIsFollowing(followRes.length === 1);
 
       let following = await getFollowing(accountId);
