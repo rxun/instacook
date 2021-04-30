@@ -10,7 +10,7 @@ def get_posts_by_account(id):
     print('lets get it')
     query_results = conn.execute(
         f"SELECT * FROM Post WHERE account_id = {id};").fetchall()
-    # print(query_results)
+    print(query_results)
     
     conn.close()
 

@@ -11,7 +11,7 @@ const FollowCard = ({ user }) => {
     <div className="card">
         <div className="header">
           {/* <div className="icon"></div> */}
-          <Button className="user-icon" background-size="75px" width="75px" height="75px" icon={<Image preview={false} src={user.profile_picture} />} />
+          <Button className="user-icon" icon={<Image preview={false} src={user.profile_picture} object-fit="cover" height="30px" width="30px"  />} />
           <div className="name">{user.username}</div>
         </div>
       </div>
@@ -25,9 +25,9 @@ export default ({}) => {
 
   useEffect(() => {
     async function fetchData() {
-      setFollowing(await getFollowing(100));
+      setFollowing(await getFollowing(0));
     //   console.log(following);
-      setFollowers(await getFollowers(100));
+      setFollowers(await getFollowers(0));
       console.log(followers);
 
     //   TODO: fix the bug with followers page icon

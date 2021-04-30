@@ -53,8 +53,8 @@ export const getPost = async (post_id) =>
 export const updatePost = async (post_id, title, picture, description) =>
   await put("/post/", { post_id, title, picture, description });
 
-// export const deletePost = async (post_id) =>
-//   await del("/post/", {post_id});
+export const deletePost = async (post_id) =>
+  await del("/post/", {post_id});
 
 export const getFollowing = async(account_id) =>
   await get(`/follows/following/${account_id}`).then((res) => res.result.result);
