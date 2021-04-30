@@ -141,7 +141,7 @@ def get_likes_from_post_id(id):
     if numeric:
         query_results = conn.execute(f'''
         SELECT COUNT(*) as count
-        FROM Likes L NATURAL JOIN Post P
+        FROM Likes L JOIN Post P ON L.account_id = P.account_id
         WHERE P.post_id = {id};
         ''')
     else:
