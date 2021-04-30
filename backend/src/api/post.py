@@ -182,9 +182,10 @@ def get_comments_from_post_id(id):
 
     if numeric:
         query_results = conn.execute(f'''
-        SELECT COUNT(*) as count
+        SELECT P.post_id, COUNT(*) as count
         FROM Comment C NATURAL JOIN Post P
-        WHERE P.post_id = {id};
+        WHERE P.post_id = {id}
+        GROUP BY P.post_id;
         ''')
     else:
         query_results = conn.execute(f'''
