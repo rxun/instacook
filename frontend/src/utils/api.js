@@ -11,14 +11,14 @@ const get = async (url, params) =>
     .then((res) => res && res.data)
     .catch((err) => console.error(err));
 
-const post = (url, data, config) =>
-  instance
+const post = async (url, data, config) =>
+  await instance
     .post(url, data, config)
     .then((res) => res && res.data)
     .catch((err) => console.error(err));
 
-const put = (url, data, config) =>
-  instance
+const put = async (url, data, config) =>
+  await instance
     .put(url, data, config)
     .then((res) => res && res.data)
     .catch((err) => console.error(err));
@@ -134,6 +134,9 @@ export const getUser = async (username) =>
     .get(`${API_URL}/account/get-user?username=${username}`)
     .catch(console.error);
 
+export const getUserById = async (id) =>
+  get(`/account/${id}`).then((res) => res.result.result[0]);
+
 export const createComment = async (commentInfo) =>
   instance
     .post(`${API_URL}/comment/create`, commentInfo)
@@ -171,3 +174,19 @@ export const getShortRecipes = async (count) =>
     .catch(console.error);
 export const getTopCommentors = async () =>
   await get("/account/top-commentors").then((res) => res.result.result);
+
+export const getNumOfLikesByPostId = async (id) =>
+  await get(`/post/likes/${id}`, { numeric: true }).then(
+    (res) => res.result.result[0].count
+  );
+
+export const getNumOfCommentsByPostId = async (id) =>
+  await get(`/post/comments/${id}`, { numeric: true }).then(
+    (res) => res.result.result[0].count
+  );
+
+export const likePost = async (account_id, post_id) =>
+  await post(`/likes/`, { account_id, post_id });
+
+export const unlikePost = async (account_id, post_id) =>
+  await del(`/likes/`, { account_id, post_id });

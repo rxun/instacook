@@ -1,10 +1,23 @@
 import { Button, Image } from "antd";
 import React, { useState, useEffect } from "react";
-import { HeartOutlined, UserOutlined } from "@ant-design/icons";
-import { getRecipe } from "../utils/api";
+import {
+  HeartOutlined,
+  MessageOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import {
+  getNumOfCommentsByPostId,
+  getNumOfLikesByPostId,
+  getRecipe,
+  getUserById,
+  likePost,
+  unlikePost,
+} from "../utils/api";
 
 import "../css/feedcard.scss";
 import { getIngredientsByRecipeId } from "./../utils/api";
+import { useHistory } from "react-router";
+import { useAuth } from "../utils/useAuth";
 
 const Details = ({ recipe, ingredients }) => {
   return (
@@ -32,18 +45,35 @@ const Details = ({ recipe, ingredients }) => {
  * in Details component
  */
 export default ({ post }) => {
+  const history = useHistory();
+  const {user} = useAuth();
+  
   const [expanded, setExpanded] = useState(false);
-  const [user, setUser] = useState();
+  const [userPosted, setUserPosted] = useState();
   const [recipe, setRecipe] = useState();
   const [ingredients, setIngredients] = useState([]);
+  const [numOfLikes, setNumOfLikes] = useState();
+  const [numOfComments, setNumOfComments] = useState();
+  const [liked, setLiked] = useState(false);
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     setUser(await getUser())
-  //   }
+  useEffect(() => {
+    async function fetchData() {
+      const post_id = post.post_id;
 
-  //   fetchData();
-  // }, [post])
+      setNumOfLikes(await getNumOfLikesByPostId(post_id));
+      setNumOfComments(await getNumOfCommentsByPostId(post_id));
+    }
+
+    fetchData();
+  }, [post.post_id]);
+
+  useEffect(() => {
+    async function fetchData() {
+      setUserPosted(await getUserById(post.account_id));
+    }
+
+    fetchData();
+  }, [post.account_id]);
 
   useEffect(() => {
     if (!expanded || (recipe && ingredients)) return;
@@ -52,22 +82,64 @@ export default ({ post }) => {
       const recipe_id = post.recipe_id;
 
       setRecipe(await getRecipe(recipe_id));
-      setIngredients(await getIngredientsByRecipeId(recipe_id) || []);
+      setIngredients((await getIngredientsByRecipeId(recipe_id)) || []);
     }
 
     fetchData();
   }, [expanded]);
 
+  const onLikeBtnClicked = async () => {
+    // TODO: use logged in account id
+    if (!user) return;
+
+    const user_id = user.account_id;
+    const { post_id } = post;
+
+    const newValue = !liked;
+    setLiked((prev) => !prev);
+
+    if (newValue) {
+      setNumOfLikes((prev) => prev + 1);
+      await likePost(user_id, post_id);
+    } else {
+      setNumOfLikes((prev) => prev - 1);
+      await unlikePost(user_id, post_id);
+    }
+  };
+
   return (
     <div className="card">
-      <div className="header">
-        {/* <div className="icon"></div> */}
-        <Button className="user-icon" icon={<UserOutlined />} />
-        <div className="name">username</div>
-      </div>
+      {userPosted && (
+        <div className="header">
+          <Button
+            className="user-icon"
+            onClick={() => history.push(`/profile/${userPosted.account_id}`)}
+          >
+            <Image
+              className="profile-pic"
+              preview={false}
+              src={userPosted.profile_picture}
+            />
+          </Button>
+          <div className="name">{userPosted.username}</div>
+        </div>
+      )}
       <Image className="card-img" src={post.description} preview={false} />
       <div>
-        <Button className="like-btn" icon={<HeartOutlined />} />
+        <div className="actions">
+          <div className="action">
+            <Button
+              className="logo-btn"
+              icon={<HeartOutlined />}
+              onClick={onLikeBtnClicked}
+            />
+            <div className="likes">{numOfLikes} likes</div>
+          </div>
+          <div className="action">
+            <Button className="logo-btn" icon={<MessageOutlined />} />
+            <div className="comments">{numOfComments} comments</div>
+          </div>
+        </div>
       </div>
       <Button className="details" onClick={() => setExpanded(!expanded)}>
         <div className="card-title-section">

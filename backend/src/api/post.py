@@ -116,3 +116,55 @@ def delete_post():
     conn.close()
 
     return create_response()
+
+
+@post.route('/likes/<id>', methods=['GET'])
+def get_likes_from_post_id(id):
+    args = request.args
+    numeric = args.get('numeric')
+
+    conn = db.connect()
+    query_results = None
+
+    if numeric:
+        query_results = conn.execute(f'''
+        SELECT COUNT(*) as count
+        FROM Likes L NATURAL JOIN Post P
+        WHERE P.post_id = {id};
+        ''')
+    else:
+        query_results = conn.execute(f'''
+        SELECT L.like_id, A.account_id, A.username, P.post_id
+        FROM (Likes L NATURAL JOIN Post P) JOIN Account A ON A.account_id = L.account_id
+        WHERE P.post_id = {id};
+        ''')
+
+    conn.close()
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results});
+
+
+@post.route('/comments/<id>', methods=['GET'])
+def get_comments_from_post_id(id):
+    args = request.args
+    numeric = args.get('numeric')
+
+    conn = db.connect()
+    query_results = None
+
+    if numeric:
+        query_results = conn.execute(f'''
+        SELECT COUNT(*) as count
+        FROM Comment C NATURAL JOIN Post P
+        WHERE P.post_id = {id};
+        ''')
+    else:
+        query_results = conn.execute(f'''
+        SELECT C.comment_id, A.account_id, A.username, P.post_id
+        FROM (Comment C NATURAL JOIN Post P) JOIN Account A ON A.account_id = C.account_id
+        WHERE P.post_id = {id};
+        ''')
+
+    conn.close()
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results});

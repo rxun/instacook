@@ -12,16 +12,29 @@
 .header {
   display: flex;
   align-items: center;
+  padding-bottom: 0.5em;
 }
 
 .user-icon {
   border-width: 0px;
   margin-right: 1em;
   box-shadow: none;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $border-gray;
+}
+
+.profile-pic {
+  width: 32px;
+  height: 32px;
 }
 
 .like-btn {
   border-width: 0px;
+  box-shadow: none;
 }
 
 .card-title-section {
@@ -41,6 +54,7 @@
 .details {
   border-width: 0px;
   box-shadow: none;
+  padding-left: 0px;
 }
 
 .details::selection,
@@ -63,10 +77,20 @@
   height: 14em;
 }
 
-.steps-title, .ingredients-title {
+.steps-title,
+.ingredients-title {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
   width: 100%;
   background-color: white;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+
+  .action {
+    margin-right: 1em;
+  }
 }

@@ -10,16 +10,14 @@ def login():
     req = request.get_json()
 
     conn = db.connect()
-    query = 'SELECT * FROM Account WHERE username="{}" AND password="{}";'.format(
+    query = 'SELECT account_id, email, first_name, last_name, bio, profile_picture, username FROM Account WHERE username="{}" AND password="{}";'.format(
         req['username'], req['password'])
     query_results = conn.execute(query).fetchall()
     conn.close()
 
     if len(query_results) == 1:
-        data = {}
-        for result in query_results:
-            data["username"] = result[7]
-        return create_response(status=200, data=data)
+        return create_response(status=200, data=dict(query_results[0]))
+
     return create_response(status=401)
 
 
@@ -61,7 +59,7 @@ def search_username():
 @account.route('/update-username', methods=['POST'])
 def update_username():
     req = request.get_json()
-    print(req)
+
     try:
         conn = db.connect()
         query = 'UPDATE Account SET username="{}" WHERE username="{}";'.format(
@@ -113,7 +111,8 @@ def get_user():
     username = request.args.get('username')
 
     conn = db.connect()
-    query = 'SELECT email, username FROM Account WHERE username LIKE "%%{}%%";'.format(username)
+    query = 'SELECT email, username FROM Account WHERE username LIKE "%%{}%%";'.format(
+        username)
     query_results = conn.execute(query).fetchall()
     conn.close()
 
@@ -142,6 +141,20 @@ def get_top_poster():
     ORDER BY nComments
     ) T
     LIMIT 15;
+    ''').fetchall()
+    conn.close()
+
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results})
+
+
+@account.route('/<id>', methods=['GET'])
+def get_account_by_id(id):
+    conn = db.connect()
+    query_results = conn.execute(f'''
+    SELECT account_id, email, first_name, last_name, bio, profile_picture, username
+    FROM Account A
+    WHERE A.account_id = {id};
     ''').fetchall()
     conn.close()
 

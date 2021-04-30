@@ -16,36 +16,39 @@ import Search from "./pages/Search";
 
 import "./css/app.scss";
 import Profile from "./pages/Profile";
+import { ProvideAuth } from "./utils/useAuth";
 
 const App = () => {
   return (
     <div>
-      <Router>
-        <Layout>
-          <Navbar />
-          <Content className="content-container">
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/feed" component={Feed} />
-              <Route exact path="/createpost" component={CreatePost} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/createaccount" component={CreateAccount} />
-              <Route exact path="/create-recipe" component={CreateRecipe} />
-              <Route
-                exact
-                path="/create-ingredient"
-                component={CreateIngredient}
-              />
-              <Route exact path="/create-post" component={CreatePost} />
-              <Route exact path="/comments" component={CreateComment} />
-              <Route exact path="/settings" component={Settings} />
-              <Route exact path="/newfeed" component={NewFeed} />
-              <Route exact path="/profile" component={Profile} />
-              <Route exact path="/search" component={Search} />
-            </Switch>
-          </Content>
-        </Layout>
-      </Router>
+      <ProvideAuth>
+        <Router>
+          <Layout>
+            <Navbar />
+            <Content className="content-container">
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/feed" component={Feed} />
+                <Route exact path="/createpost" component={CreatePost} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/createaccount" component={CreateAccount} />
+                <Route exact path="/create-recipe" component={CreateRecipe} />
+                <Route
+                  exact
+                  path="/create-ingredient"
+                  component={CreateIngredient}
+                />
+                <Route exact path="/create-post" component={CreatePost} />
+                <Route exact path="/comments" component={CreateComment} />
+                <Route exact path="/settings" component={Settings} />
+                <Route exact path="/newfeed" component={NewFeed} />
+                <Route exact path="/profile" component={Profile} />
+                <Route exact path="/search" component={Search} />
+              </Switch>
+            </Content>
+          </Layout>
+        </Router>
+      </ProvideAuth>
     </div>
   );
 };

@@ -11,6 +11,7 @@ const TABS = Object.freeze({
   POST: 2,
   COMMENT: 3,
   RECIPE: 4,
+  MISC: 5
 });
 
 export default ({ searchText }) => {
@@ -84,6 +85,7 @@ export default ({ searchText }) => {
         <TabPane tab="Post" key={TABS.POST}></TabPane>
         <TabPane tab="Comment" key={TABS.COMMENT}></TabPane>
         <TabPane tab="Recipe" key={TABS.RECIPE}></TabPane>
+        <TabPane tab="Misc" key={TABS.MISC}></TabPane>
       </Tabs>
       <List dataSource={activeDataSource || []} renderItem={(item) => null} />
     </div>
