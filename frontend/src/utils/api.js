@@ -32,8 +32,8 @@ const del = async (url, params) =>
 export const feed = async (accountInfo) =>
   instance.get(`${API_URL}/post/feed`, accountInfo).catch(console.error);
 
-export const createPost = async (title, picture, description, account_id) =>
-  await post("/post/", { title, picture, description, account_id });
+export const createPost = async (title, picture, description, recipe_id, account_id) =>
+  await post("/post/", { title, picture, description, recipe_id, account_id });
 
 export const getPostsByAccount = async (account_id) =>
   await get(`/post/by/${account_id}`).then((res) => res.result.result);
