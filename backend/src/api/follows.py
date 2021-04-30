@@ -23,10 +23,10 @@ def get_following_by_id(id):
 @follows.route('/followers/<id>', methods=['GET'])
 def get_followers_by_id(id):
     conn = db.connect()
-    # print('we did it!')
+    print('we did it!')
     query_results = conn.execute(
-        f"SELECT * FROM (Follows JOIN Account ON Follows.account1_id = Account.account_id) WHERE account2_id = {id};").fetchall()
-    # print(query_results)
+        f"SELECT Follows.account1_id, Follows.account2_id, Account.profile_picture, Account.username FROM (Account JOIN Follows ON Follows.account1_id = Account.account_id) WHERE account2_id = {id};").fetchall()
+    print(query_results)
 
     conn.close()
 

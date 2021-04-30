@@ -46,9 +46,9 @@ export default ({}) => {
 
   useEffect(() => {
     async function fetchData() {
-      setFollowing(await getFollowing(accountId));
+      setFollowing(await getFollowing(user.account_id));
       //   console.log(following);
-      setFollowers(await getFollowers(accountId));
+      setFollowers(await getFollowers(user.account_id));
       console.log(followers);
     }
 

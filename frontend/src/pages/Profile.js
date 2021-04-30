@@ -73,8 +73,12 @@ const DefaultProfile = ({ accountId }) => {
 
   useEffect(() => {
     async function fetchData() {
-      setAccount(await getUserById(user.account_id));
-      setPosts(await getPostsByAccount(user.account_id));
+      console.log("user account id" + user.account_id);
+      console.log("account id" + accountId);
+      console.log("account" + account);
+
+      setAccount(await getUserById(accountId));
+      setPosts(await getPostsByAccount(accountId));
 
       const followRes = await getFollow(user.account_id, accountId);
       setIsFollowing(followRes.length === 1);
