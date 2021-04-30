@@ -29,30 +29,28 @@ const del = async (url, params) =>
     .then((res) => res && res.data)
     .catch((err) => console.error(err));
 
-
 export const feed = async (accountInfo) =>
   instance.get(`${API_URL}/post/feed`, accountInfo).catch(console.error);
 
 export const createPost = async (title, picture, description, account_id) =>
-  await post("/post/", {title, picture, description, account_id} );
+  await post("/post/", { title, picture, description, account_id });
 
-export const getPosts = async () => 
+export const getPosts = async () =>
   await get("/post/").then((res) => res.result.result);
 
-export const getPostsOnKeyword = async (keyword) => 
-  await get("/post", { keyword }).then(res => res.result.result);
+export const getPostsOnKeyword = async (keyword) =>
+  await get("/post", { keyword }).then((res) => res.result.result);
 
 export const getFewestStepsPosts = async () =>
   await get("/post/fewest").then((res) => res.result.result);
 
-export const getPost = async (post_id) => 
+export const getPost = async (post_id) =>
   await get(`/post/${post_id}`).then((res) => res.result.result);
 
 export const updatePost = async (post_id, title, picture, description) =>
   await put("/post/", { post_id, title, picture, description });
 
-export const deletePost = async (post_id) =>
-  await del("/post/", {post_id});
+export const deletePost = async (post_id) => await del("/post/", { post_id });
 /**
  * API START
  * */
@@ -73,6 +71,11 @@ export const deleteRecipe = async (recipe_id) =>
 
 export const getRecipesOnKeyword = async (keyword) =>
   await get("/recipes", { keyword }).then((res) => res.result.result);
+
+export const getIngredientsByRecipeId = async (recipe_id) =>
+  await get(`/recipes/ingredients`, { id: recipe_id }).then(
+    (res) => res.result.result
+  );
 
 export const getIngredients = async () =>
   await get("/ingredients/").then((res) => res.result.result);
@@ -121,7 +124,6 @@ export const deleteAccount = async (usernameInfo) =>
     .post(`${API_URL}/account/delete-account`, usernameInfo)
     .catch(console.error);
 
-
 export const getTopLikers = async (count) =>
   instance
     .get(`${API_URL}/account/get-top-likers?count=${count}`)
@@ -147,7 +149,7 @@ export const getComment = async (comment_id) =>
 export const searchComment = async (text) =>
   instance
     .get(`${API_URL}/comment/search-comment?text=${text}`)
-    .then(res => res.data.result.result)
+    .then((res) => res.data.result.result)
     .catch(console.error);
 
 export const updateComment = async (commentInfo) =>
@@ -167,5 +169,9 @@ export const getShortRecipes = async (count) =>
     .get(`${API_URL}/comment/get-short-recipes?count=${count}`)
     .then((res) => res.data)
     .catch(console.error);
+
 export const getTopCommentors = async () =>
   await get("/account/top-commentors").then((res) => res.result.result);
+
+export const getCommentsByPostId = async (id) =>
+  await get("/post/comments", { id }).then((res) => res.result.result);

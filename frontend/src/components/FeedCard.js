@@ -1,7 +1,12 @@
 import { Button, Image } from "antd";
 import React, { useState, useEffect } from "react";
-import { HeartOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  HeartOutlined,
+  UserOutlined,
+  ArrowRightOutlined,
+} from "@ant-design/icons";
 import { getRecipe } from "../utils/api";
+import { useHistory } from "react-router";
 
 import "../css/feedcard.scss";
 
@@ -24,7 +29,8 @@ const Details = ({ recipe, ingredients }) => {
  * TODO: Fetch user, ingredients, and comments and display
  * in Details component
  */
-export default ({ post }) => {
+export default ({ post, viewDetails }) => {
+  let history = useHistory();
   const [expanded, setExpanded] = useState(false);
   const [user, setUser] = useState();
   const [recipe, setRecipe] = useState();
@@ -48,12 +54,22 @@ export default ({ post }) => {
     fetchData();
   }, [expanded]);
 
+  const handlePostClick = () => history.push(`/post/${post.post_id}`);
+
   return (
     <div className="card">
       <div className="header">
-        {/* <div className="icon"></div> */}
-        <Button className="user-icon" icon={<UserOutlined />} />
-        <div className="name">username</div>
+        <div className="user-info">
+          <Button className="user-icon" icon={<UserOutlined />} />
+          <div className="name">username</div>
+        </div>
+        {viewDetails && (
+          <Button
+            onClick={handlePostClick}
+            className="like-btn"
+            icon={<ArrowRightOutlined />}
+          />
+        )}
       </div>
       <Image className="card-img" src={post.description} />
       <div>

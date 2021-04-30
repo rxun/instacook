@@ -79,3 +79,15 @@ def delete_recipe():
 
     return create_response()
 
+@recipes.route('/ingredients', methods=['GET'])
+def get_ingredients():
+    args = request.args
+    id = args.get('id')
+
+    conn = db.connect()
+    query_results = conn.execute(
+        f"SELECT i.name FROM Recipe r JOIN RecipeContains rc ON r.recipe_id = rc.recipe_id JOIN Ingredient i ON rc.ingredient_id = i.ingredient_id WHERE r.recipe_id = {id};").fetchall()
+    conn.close()
+
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results})
