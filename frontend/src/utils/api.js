@@ -205,6 +205,11 @@ export const getNumOfCommentsByPostId = async (id) =>
     (res) => res.result.result[0].count
   );
 
+export const getLikesForUser = async (account_id) =>
+  await get(`/likes/`, { account_id }).then(
+    (res) => res.result.result[0].count
+  );
+
 export const likePost = async (account_id, post_id) =>
   await post(`/likes/`, { account_id, post_id });
 

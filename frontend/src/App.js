@@ -29,7 +29,7 @@ const App = () => {
           <Navbar />
           <Content className="content-container">
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route exact path="/" component={NewFeed} />
               <Route exact path="/feed" component={Feed} />
               <Route exact path="/createpost" component={CreatePost} />
               <Route exact path="/login" component={Login} />
@@ -48,7 +48,7 @@ const App = () => {
               <Route exact path="/search" component={Search} />
               <Route exact path="/post/:id" component={PostDetails} />
               <Route exact path="/follows" component={Follows} />
-              <Route exact path="/liked-posts" component={LikedPosts}/>
+              <Route exact path="/liked-posts" component={LikedPosts} />
             </Switch>
           </Content>
         </Layout>

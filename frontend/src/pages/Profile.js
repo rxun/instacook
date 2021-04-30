@@ -12,6 +12,7 @@ import {
   getFollow,
   follow,
   getUserById,
+  getLikesForUser,
 } from "../utils/api";
 import { UserOutlined } from "@ant-design/icons";
 import {
@@ -24,6 +25,7 @@ import {
 import imagePlaceholder from "../img/image-placeholder.png";
 import { useAuth } from "../utils/useAuth";
 import { unfollow } from "./../utils/api";
+import FeedCard from "../components/FeedCard";
 
 const { TabPane } = Tabs;
 
@@ -84,6 +86,7 @@ const DefaultProfile = ({ accountId }) => {
       setNumFollowers(followers.length);
 
       // TODO: fetch # likes from other people
+      setNumLikes(await getLikesForUser(accountId));
     }
 
     fetchData();
@@ -100,6 +103,9 @@ const DefaultProfile = ({ accountId }) => {
     } else {
       await unfollow(user_id, accountId);
     }
+
+    const followers = await getFollowers(accountId);
+    setNumFollowers(followers.length);
   };
 
   return (
@@ -112,6 +118,7 @@ const DefaultProfile = ({ accountId }) => {
           <div className="username">{account && account.username}</div>
         </div>
         <div className="additional-info">
+          <div className="name">{account && account.first_name}</div>
           <div className="bio">{account && (account.bio || "[no bio]")}</div>
 
           {user && user.account_id != accountId && isFollowing !== undefined && (
@@ -132,7 +139,7 @@ const DefaultProfile = ({ accountId }) => {
         renderItem={(item) => {
           return (
             <List.Item>
-              <ProfilePostPreviewCard post={item} />
+              <FeedCard hideHeader post={item} />
             </List.Item>
           );
         }}
