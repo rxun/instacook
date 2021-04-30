@@ -6,8 +6,17 @@ import random
 likes = Blueprint("likes", __name__)
 
 @likes.route('/', methods=['GET'])
-def get_likes():
-  return create_response();
+def get_likes_for_user():
+    data = request.args
+    account_id = data.get('account_id')
+
+    conn = db.connect()
+    query_results = conn.execute(
+        f'SELECT COUNT(*) as count FROM Likes WHERE account_id={account_id}').fetchall()
+    conn.close()
+
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results})
 
 @likes.route('/', methods=['POST'])
 def create_like():
