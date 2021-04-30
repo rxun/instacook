@@ -11,11 +11,13 @@ import { useHistory } from "react-router";
 
 import "../css/navbar.scss";
 import { Header } from "antd/lib/layout/layout";
+import { useAuth } from "../utils/useAuth";
 
 const { Search } = Input;
 
 export default () => {
   const history = useHistory();
+  const { user } = useAuth();
 
   return (
     <Header className="navbar">
@@ -32,7 +34,13 @@ export default () => {
         <Button
           className="logo-btn account-btn"
           icon={<UserOutlined />}
-          onClick={() => history.push("/profile")}
+          onClick={() => {
+            if (!user) {
+              history.push("/login");
+            } else {
+              history.push("/profile");
+            }
+          }}
         />
         <Button
           className="logo-btn settings-btn"

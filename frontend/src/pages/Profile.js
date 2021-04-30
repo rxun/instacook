@@ -110,7 +110,7 @@ const DefaultProfile = ({ accountId }) => {
           <div className="username">{account && account.username}</div>
         </div>
         <div className="additional-info">
-          <div className="bio">{account && account.bio}</div>
+          <div className="bio">{account && (account.bio || "[no bio]")}</div>
 
           {user && user.account_id != accountId && isFollowing !== undefined && (
             <Button className="follow-btn" onClick={onFollowBtnClick}>

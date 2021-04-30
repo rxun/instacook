@@ -3,9 +3,11 @@ import { useHistory } from "react-router";
 import { getUsername, updateUsername, deleteAccount } from "../utils/api";
 import { Input, Form, Button } from "antd";
 
-import '../css/settings.scss';
+import "../css/settings.scss";
+import { useAuth } from "../utils/useAuth";
 
 const Settings = (props) => {
+  const { user } = useAuth();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
@@ -52,7 +54,10 @@ const Settings = (props) => {
       <h1>Account Settings</h1>
       <Form layout="vertical" onFinish={handleUpdateUsername}>
         <Form.Item label="Update Username">
-          <Input onChange={handleUsernameChange} />
+          <Input
+            defaultValue={user && user.username}
+            onChange={handleUsernameChange}
+          />
         </Form.Item>
         {username.length > 0 &&
           (isUsernameTaken ? (
@@ -61,10 +66,35 @@ const Settings = (props) => {
             <p>Username is available!</p>
           ))}
         <Form.Item label="Email">
-          <Input onChange={(e) => setEmail(e)} />
+          <Input
+            defaultValue={user && user.email}
+            onChange={(e) => setEmail(e)}
+          />
+        </Form.Item>
+        <Form.Item label="First Name">
+          <Input
+            defaultValue={user && user.first_name}
+            onChange={(e) => setEmail(e)}
+          />
+        </Form.Item>
+        <Form.Item label="Last Name">
+          <Input
+            defaultValue={user && user.last_name}
+            onChange={(e) => setEmail(e)}
+          />
+        </Form.Item>
+        <Form.Item label="Profile Picture">
+          <Input
+            defaultValue={user && user.profile_picture}
+            onChange={(e) => setEmail(e)}
+          />
         </Form.Item>
         <Form.Item label="Bio">
-          <Input onChange={(e) => setEmail(e)} />
+          <Input.TextArea
+            autoSize={{ minRows: 3, maxRows: 5 }}
+            defaultValue={user && user.bio}
+            onChange={(e) => setBio(e)}
+          />
         </Form.Item>
         <Button type="primary" htmlType="submit">
           Update
