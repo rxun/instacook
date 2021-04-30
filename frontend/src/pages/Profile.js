@@ -111,6 +111,7 @@ const DefaultProfile = ({ accountId }) => {
           <div className="username">{account && account.username}</div>
         </div>
         <div className="additional-info">
+          <div className="name">{account && account.first_name}</div>
           <div className="bio">{account && (account.bio || "[no bio]")}</div>
 
           {user && user.account_id != accountId && isFollowing !== undefined && (
