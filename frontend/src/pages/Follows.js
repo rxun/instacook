@@ -11,7 +11,7 @@ const FollowCard = ({ user }) => {
     <div className="card">
         <div className="header">
           {/* <div className="icon"></div> */}
-          <Button className="user-icon" width="75px" height="75px" icon={<Image preview={false} src={user.profile_picture} />} />
+          <Button className="user-icon" background-size="75px" width="75px" height="75px" icon={<Image preview={false} src={user.profile_picture} />} />
           <div className="name">{user.username}</div>
         </div>
       </div>
@@ -26,7 +26,7 @@ export default ({}) => {
   useEffect(() => {
     async function fetchData() {
       setFollowing(await getFollowing(100));
-      console.log(following);
+    //   console.log(following);
       setFollowers(await getFollowers(100));
       console.log(followers);
 

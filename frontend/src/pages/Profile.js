@@ -53,11 +53,8 @@ const DefaultProfile = ({ accountId }) => {
 
   useEffect(() => {
     async function fetchData() {
-      // TODO: fetch posts by account id
       setPosts(await getPostsByAccount(100));
-      // console.log(post);
 
-      // TODO: fetch # follows/followers
       let following = await getFollowing(100);
       setNumFollowing(following.length);
 
