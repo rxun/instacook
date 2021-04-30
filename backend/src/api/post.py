@@ -21,7 +21,7 @@ def get_posts_by_account(id):
 @post.route('/', methods=['POST'])
 def create_post():
     data = request.json
-    print(data)
+    # print(data)
 
     try:
         conn = db.connect()
@@ -29,13 +29,14 @@ def create_post():
         picture = data.get('picture')
         description = data.get('description')
         account_id = data.get('account_id')
+        recipe_id = data.get('recipe_id')
 
         query = 'SELECT MAX(post_id) FROM Post;'
         query_results = conn.execute(query).fetchall()
         new_post_id = 0
         for result in query_results:
             new_post_id = result[0] + 1 
-        query = 'INSERT INTO Post (post_id, title, picture, description, account_id) VALUES ("{}", "{}", "{}", "{}", "{}");'.format(new_post_id, title, picture, description, account_id)
+        query = 'INSERT INTO Post (post_id, title, picture, description, recipe_id, account_id) VALUES ("{}", "{}", "{}", "{}", "{}", "{}");'.format(new_post_id, title, picture, description, recipe_id, account_id)
         conn.execute(query)
         conn.close()
         return create_response(data={'post_id':new_post_id})
