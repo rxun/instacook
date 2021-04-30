@@ -1,5 +1,13 @@
 @use 'colors' as *;
 
+@font-face {
+  font-family: 'Blue-Vinyl-Regular';
+  src: url('fonts/Fontspring-DEMO-blue_vinyl_regular_ps_ot.otf') format('otf'),
+       url('fonts/fontspring-demo-blue_vinyl_regular_ps_ot-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -13,6 +21,7 @@
 
 .title {
   font-size: 2em;
+  font-family: 'Blue-Vinyl-Regular';
 }
 
 .search-bar {
