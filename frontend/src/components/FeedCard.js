@@ -123,8 +123,8 @@ export default ({ post, viewDetails }) => {
                 src={userPosted.profile_picture}
               />
             </Button>
+            <div className="name">{userPosted.username}</div>
           </div>
-          <div className="name">{userPosted.username}</div>
           {viewDetails && (
             <Button
               onClick={() => history.push(`/post/${post.post_id}`)}
