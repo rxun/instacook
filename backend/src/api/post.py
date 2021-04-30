@@ -73,6 +73,19 @@ def get_post_by_id(id):
     results = [dict(obj) for obj in query_results]
     return create_response(data={'result':results})
 
+@post.route('/comments', methods=['GET'])
+def get_post_comments():
+    args = request.args
+    id = args.get('id')
+
+    conn = db.connect()
+    query_results = conn.execute(
+        f"SELECT * FROM Post JOIN Comment ON Post.post_id = Comment.post_id WHERE Post.post_id = {id};").fetchall()
+    conn.close()
+
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result':results})
+
 @post.route('/fewest', methods=['GET'])
 def get_fewest_steps_posts():
     conn = db.connect()

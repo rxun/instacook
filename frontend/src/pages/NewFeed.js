@@ -26,7 +26,7 @@ export default ({}) => {
           renderItem={(item) => {
             return (
               <List.Item>
-                <FeedCard post={item}/>
+                <FeedCard post={item} viewDetails />
               </List.Item>
             );
           }}

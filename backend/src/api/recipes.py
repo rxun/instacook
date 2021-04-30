@@ -78,4 +78,3 @@ def delete_recipe():
     conn.close()
 
     return create_response()
-

@@ -53,14 +53,17 @@ export const getPost = async (post_id) =>
 export const updatePost = async (post_id, title, picture, description) =>
   await put("/post/", { post_id, title, picture, description });
 
-export const deletePost = async (post_id) =>
-  await del("/post/", {post_id});
+export const deletePost = async (post_id) => await del("/post/", { post_id });
 
-export const getFollowing = async(account_id) =>
-  await get(`/follows/following/${account_id}`).then((res) => res.result.result);
+export const getFollowing = async (account_id) =>
+  await get(`/follows/following/${account_id}`).then(
+    (res) => res.result.result
+  );
 
-export const getFollowers = async(account_id) =>
-  await get(`/follows/followers/${account_id}`).then((res) => res.result.result);
+export const getFollowers = async (account_id) =>
+  await get(`/follows/followers/${account_id}`).then(
+    (res) => res.result.result
+  );
 
 export const getRecipes = async () =>
   await get("/recipes/").then((res) => res.result.result);
@@ -182,6 +185,9 @@ export const getShortRecipes = async (count) =>
 
 export const getTopCommentors = async () =>
   await get("/account/top-commentors").then((res) => res.result.result);
+
+export const getCommentsByPostId = async (id) =>
+  await get("/post/comments", { id }).then((res) => res.result.result);
 
 export const getNumOfLikesByPostId = async (id) =>
   await get(`/post/likes/${id}`, { numeric: true }).then(
