@@ -4,6 +4,7 @@ import {
   HeartOutlined,
   MessageOutlined,
   UserOutlined,
+  ArrowRightOutlined,
 } from "@ant-design/icons";
 import {
   getNumOfCommentsByPostId,
@@ -44,10 +45,10 @@ const Details = ({ recipe, ingredients }) => {
  * TODO: Fetch user, ingredients, and comments and display
  * in Details component
  */
-export default ({ post }) => {
+export default ({ post, viewDetails }) => {
   const history = useHistory();
-  const {user} = useAuth();
-  
+  const { user } = useAuth();
+
   const [expanded, setExpanded] = useState(false);
   const [userPosted, setUserPosted] = useState();
   const [recipe, setRecipe] = useState();
@@ -111,17 +112,26 @@ export default ({ post }) => {
     <div className="card">
       {userPosted && (
         <div className="header">
-          <Button
-            className="user-icon"
-            onClick={() => history.push(`/profile/${userPosted.account_id}`)}
-          >
-            <Image
-              className="profile-pic"
-              preview={false}
-              src={userPosted.profile_picture}
+          <div className="user-info">
+            <Button
+              className="user-icon"
+              onClick={() => history.push(`/profile/${userPosted.account_id}`)}
+            >
+              <Image
+                className="profile-pic"
+                preview={false}
+                src={userPosted.profile_picture}
+              />
+            </Button>
+            <div className="name">{userPosted.username}</div>
+          </div>
+          {viewDetails && (
+            <Button
+              onClick={() => history.push(`/post/${post.post_id}`)}
+              className="like-btn"
+              icon={<ArrowRightOutlined />}
             />
-          </Button>
-          <div className="name">{userPosted.username}</div>
+          )}
         </div>
       )}
       <Image className="card-img" src={post.description} preview={false} />

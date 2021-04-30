@@ -186,6 +186,9 @@ export const getShortRecipes = async (count) =>
 export const getTopCommentors = async () =>
   await get("/account/top-commentors").then((res) => res.result.result);
 
+export const getCommentsByPostId = async (id) =>
+  await get("/post/comments", { id }).then((res) => res.result.result);
+
 export const getNumOfLikesByPostId = async (id) =>
   await get(`/post/likes/${id}`, { numeric: true }).then(
     (res) => res.result.result[0].count
