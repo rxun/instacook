@@ -35,6 +35,9 @@ export const feed = async (accountInfo) =>
 export const createPost = async (title, picture, description, account_id) =>
   await post("/post/", { title, picture, description, account_id });
 
+export const getPostsByAccount = async (account_id) =>
+  await get(`/post/by/${account_id}`).then((res) => res.result.result);
+
 export const getPosts = async () =>
   await get("/post/").then((res) => res.result.result);
 
@@ -50,10 +53,14 @@ export const getPost = async (post_id) =>
 export const updatePost = async (post_id, title, picture, description) =>
   await put("/post/", { post_id, title, picture, description });
 
-export const deletePost = async (post_id) => await del("/post/", { post_id });
-/**
- * API START
- * */
+// export const deletePost = async (post_id) =>
+//   await del("/post/", {post_id});
+
+export const getFollowing = async(account_id) =>
+  await get(`/follows/following/${account_id}`).then((res) => res.result.result);
+
+export const getFollowers = async(account_id) =>
+  await get(`/follows/followers/${account_id}`).then((res) => res.result.result);
 
 export const getRecipes = async () =>
   await get("/recipes/").then((res) => res.result.result);
@@ -169,5 +176,6 @@ export const getShortRecipes = async (count) =>
     .get(`${API_URL}/comment/get-short-recipes?count=${count}`)
     .then((res) => res.data)
     .catch(console.error);
+
 export const getTopCommentors = async () =>
   await get("/account/top-commentors").then((res) => res.result.result);

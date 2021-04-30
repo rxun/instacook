@@ -2,7 +2,7 @@ import { Tabs, List, Button, Image } from "antd";
 import React, { useState, useEffect } from "react";
 
 import "../css/profile.scss";
-import { getPosts, getRecipes, getTopCommentors } from "../utils/api";
+import { getFollowing, getFollowers, getPostsByAccount, getRecipes, getTopCommentors } from "../utils/api";
 import { UserOutlined } from "@ant-design/icons";
 import {
   Switch,
@@ -30,7 +30,7 @@ const ProfilePostPreviewCard = ({ post }) => {
   return (
     <div className="profile-post-preview-card">
       <Button className="btn">
-        <Image width="300px" preview={false} src={imagePlaceholder} />
+        <Image width="300px" preview={false} src={post.description} />
       </Button>
     </div>
   );
@@ -46,15 +46,21 @@ const DefaultProfile = ({ accountId }) => {
 
   accountId = accountId !== undefined ? accountId : params.accountId;
 
-  const [post, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [numFollowers, setNumFollowers] = useState(0);
   const [numFollowing, setNumFollowing] = useState(0);
   const [numLikes, setNumLikes] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
-      // TODO: fetch posts by account id
-      // TODO: fetch # follows/followers
+      setPosts(await getPostsByAccount(100));
+
+      let following = await getFollowing(100);
+      setNumFollowing(following.length);
+
+      let followers = await getFollowers(100);
+      setNumFollowers(followers.length);
+
       // TODO: fetch # likes from other people
     }
 
@@ -80,8 +86,14 @@ const DefaultProfile = ({ accountId }) => {
       </div>
       <List
         grid={{ gutter: 32, column: 3 }}
-        dataSource={[{ a: 1 }, { a: 1 }, { a: 1 }, { a: 1 }]}
-        renderItem={(item) => <ProfilePostPreviewCard />}
+        dataSource={posts || []}
+        renderItem={(item) => {
+            return (
+              <List.Item>
+                <ProfilePostPreviewCard post={item}/>
+              </List.Item>
+            );
+          }}
       />
     </div>
   );

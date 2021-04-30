@@ -4,21 +4,19 @@ from src import db
 
 post = Blueprint("post", __name__)
 
-@post.route('/feed', methods=['GET'])
-def feed():
-    req = request.get_json()
+@post.route('/by/<id>', methods=['GET'])
+def get_posts_by_account(id):
+    conn = db.connect()
+    print('lets get it')
+    query_results = conn.execute(
+        f"SELECT * FROM Post WHERE account_id = {id};").fetchall()
+    # print(query_results)
+    
+    conn.close()
 
-    try:
-        conn = db.connect()
-        query = 'SELECT * FROM Post WHERE account_id="{}";'.format(req['account_id'])
-        query_results = conn.execute(query).fetchall()
-        conn.close()
-
-        data = query_results[0]
-
-        return create_response(status=200, data=data)
-    except:
-        return create_response(status=401)
+    results = [dict(obj) for obj in query_results]
+    print(results)
+    return create_response(data={'result': results})
 
 @post.route('/', methods=['POST'])
 def create_post():

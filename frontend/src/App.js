@@ -11,6 +11,7 @@ import Settings from "./pages/Settings";
 import CreateComment from "./pages/CreateComment";
 import Home from "./pages/Home";
 import NewFeed from "./pages/NewFeed";
+import Follows from "./pages/Follows";
 import Layout, { Content, Header } from "antd/lib/layout/layout";
 import Search from "./pages/Search";
 
@@ -42,6 +43,7 @@ const App = () => {
               <Route exact path="/newfeed" component={NewFeed} />
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/search" component={Search} />
+              <Route exact path="/follows" component={Follows} />
             </Switch>
           </Content>
         </Layout>
