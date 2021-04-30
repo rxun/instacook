@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { login } from "../utils/api";
 
 import "../css/login.scss";
+import { useAuth } from "../utils/useAuth";
 
 const Login = () => {
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,7 +17,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await login({ username, password });
+    const res = await login(username, password);
     if (res) {
       alert(`Login Successful: Welcome Back ${username}!`);
       history.push({

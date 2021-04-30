@@ -4,21 +4,19 @@ from src import db
 
 post = Blueprint("post", __name__)
 
-@post.route('/feed', methods=['GET'])
-def feed():
-    req = request.get_json()
+@post.route('/by/<id>', methods=['GET'])
+def get_posts_by_account(id):
+    conn = db.connect()
+    print('lets get it')
+    query_results = conn.execute(
+        f"SELECT * FROM Post WHERE account_id = {id};").fetchall()
+    print(query_results)
+    
+    conn.close()
 
-    try:
-        conn = db.connect()
-        query = 'SELECT * FROM Post WHERE account_id="{}";'.format(req['account_id'])
-        query_results = conn.execute(query).fetchall()
-        conn.close()
-
-        data = query_results[0]
-
-        return create_response(status=200, data=data)
-    except:
-        return create_response(status=401)
+    results = [dict(obj) for obj in query_results]
+    print(results)
+    return create_response(data={'result': results})
 
 @post.route('/', methods=['POST'])
 def create_post():
@@ -129,3 +127,55 @@ def delete_post():
     conn.close()
 
     return create_response()
+
+
+@post.route('/likes/<id>', methods=['GET'])
+def get_likes_from_post_id(id):
+    args = request.args
+    numeric = args.get('numeric')
+
+    conn = db.connect()
+    query_results = None
+
+    if numeric:
+        query_results = conn.execute(f'''
+        SELECT COUNT(*) as count
+        FROM Likes L NATURAL JOIN Post P
+        WHERE P.post_id = {id};
+        ''')
+    else:
+        query_results = conn.execute(f'''
+        SELECT L.like_id, A.account_id, A.username, P.post_id
+        FROM (Likes L NATURAL JOIN Post P) JOIN Account A ON A.account_id = L.account_id
+        WHERE P.post_id = {id};
+        ''')
+
+    conn.close()
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results});
+
+
+@post.route('/comments/<id>', methods=['GET'])
+def get_comments_from_post_id(id):
+    args = request.args
+    numeric = args.get('numeric')
+
+    conn = db.connect()
+    query_results = None
+
+    if numeric:
+        query_results = conn.execute(f'''
+        SELECT COUNT(*) as count
+        FROM Comment C NATURAL JOIN Post P
+        WHERE P.post_id = {id};
+        ''')
+    else:
+        query_results = conn.execute(f'''
+        SELECT C.comment_id, A.account_id, A.username, P.post_id
+        FROM (Comment C NATURAL JOIN Post P) JOIN Account A ON A.account_id = C.account_id
+        WHERE P.post_id = {id};
+        ''')
+
+    conn.close()
+    results = [dict(obj) for obj in query_results]
+    return create_response(data={'result': results});

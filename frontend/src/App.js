@@ -11,16 +11,18 @@ import Settings from "./pages/Settings";
 import CreateComment from "./pages/CreateComment";
 import Home from "./pages/Home";
 import NewFeed from "./pages/NewFeed";
+import Follows from "./pages/Follows";
 import Layout, { Content, Header } from "antd/lib/layout/layout";
 import Search from "./pages/Search";
 import PostDetails from "./pages/PostDetails";
 
 import "./css/app.scss";
 import Profile from "./pages/Profile";
+import { ProvideAuth } from "./utils/useAuth";
 
 const App = () => {
   return (
-    <div>
+    <ProvideAuth>
       <Router>
         <Layout>
           <Navbar />
@@ -44,11 +46,12 @@ const App = () => {
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/search" component={Search} />
               <Route exact path="/post/:id" component={PostDetails} />
+              <Route exact path="/follows" component={Follows} />
             </Switch>
           </Content>
         </Layout>
       </Router>
-    </div>
+    </ProvideAuth>
   );
 };
 

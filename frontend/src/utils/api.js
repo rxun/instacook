@@ -11,14 +11,14 @@ const get = async (url, params) =>
     .then((res) => res && res.data)
     .catch((err) => console.error(err));
 
-const post = (url, data, config) =>
-  instance
+const post = async (url, data, config) =>
+  await instance
     .post(url, data, config)
     .then((res) => res && res.data)
     .catch((err) => console.error(err));
 
-const put = (url, data, config) =>
-  instance
+const put = async (url, data, config) =>
+  await instance
     .put(url, data, config)
     .then((res) => res && res.data)
     .catch((err) => console.error(err));
@@ -34,6 +34,9 @@ export const feed = async (accountInfo) =>
 
 export const createPost = async (title, picture, description, account_id) =>
   await post("/post/", { title, picture, description, account_id });
+
+export const getPostsByAccount = async (account_id) =>
+  await get(`/post/by/${account_id}`).then((res) => res.result.result);
 
 export const getPosts = async () =>
   await get("/post/").then((res) => res.result.result);
@@ -51,15 +54,22 @@ export const updatePost = async (post_id, title, picture, description) =>
   await put("/post/", { post_id, title, picture, description });
 
 export const deletePost = async (post_id) => await del("/post/", { post_id });
-/**
- * API START
- * */
+
+export const getFollowing = async (account_id) =>
+  await get(`/follows/following/${account_id}`).then(
+    (res) => res.result.result
+  );
+
+export const getFollowers = async (account_id) =>
+  await get(`/follows/followers/${account_id}`).then(
+    (res) => res.result.result
+  );
 
 export const getRecipes = async () =>
   await get("/recipes/").then((res) => res.result.result);
 
 export const getRecipe = async (recipe_id) =>
-  await get(`/recipes/${recipe_id}`).then((res) => res.result.result);
+  await get(`/recipes/${recipe_id}`).then((res) => res.result.result[0]);
 
 export const createRecipe = async (steps) => await post("/recipes/", { steps });
 
@@ -72,17 +82,17 @@ export const deleteRecipe = async (recipe_id) =>
 export const getRecipesOnKeyword = async (keyword) =>
   await get("/recipes", { keyword }).then((res) => res.result.result);
 
-export const getIngredientsByRecipeId = async (recipe_id) =>
-  await get(`/recipes/ingredients`, { id: recipe_id }).then(
-    (res) => res.result.result
-  );
-
 export const getIngredients = async () =>
   await get("/ingredients/").then((res) => res.result.result);
 
 export const getIngredientById = async (ingredient_id) =>
   await get(`/ingredients/${ingredient_id}`).then(
     (res) => res.result.result[0]
+  );
+
+export const getIngredientsByRecipeId = async (recipe_id) =>
+  await get(`/ingredients/recipe/${recipe_id}`).then(
+    (res) => res.result.result
   );
 
 export const createIngredient = async (name, type) =>
@@ -134,6 +144,9 @@ export const getUser = async (username) =>
     .get(`${API_URL}/account/get-user?username=${username}`)
     .catch(console.error);
 
+export const getUserById = async (id) =>
+  get(`/account/${id}`).then((res) => res.result.result[0]);
+
 export const createComment = async (commentInfo) =>
   instance
     .post(`${API_URL}/comment/create`, commentInfo)
@@ -175,3 +188,19 @@ export const getTopCommentors = async () =>
 
 export const getCommentsByPostId = async (id) =>
   await get("/post/comments", { id }).then((res) => res.result.result);
+
+export const getNumOfLikesByPostId = async (id) =>
+  await get(`/post/likes/${id}`, { numeric: true }).then(
+    (res) => res.result.result[0].count
+  );
+
+export const getNumOfCommentsByPostId = async (id) =>
+  await get(`/post/comments/${id}`, { numeric: true }).then(
+    (res) => res.result.result[0].count
+  );
+
+export const likePost = async (account_id, post_id) =>
+  await post(`/likes/`, { account_id, post_id });
+
+export const unlikePost = async (account_id, post_id) =>
+  await del(`/likes/`, { account_id, post_id });

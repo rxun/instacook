@@ -2,24 +2,40 @@ import { Button, Image } from "antd";
 import React, { useState, useEffect } from "react";
 import {
   HeartOutlined,
+  MessageOutlined,
   UserOutlined,
   ArrowRightOutlined,
 } from "@ant-design/icons";
-import { getRecipe } from "../utils/api";
-import { useHistory } from "react-router";
+import {
+  getNumOfCommentsByPostId,
+  getNumOfLikesByPostId,
+  getRecipe,
+  getUserById,
+  likePost,
+  unlikePost,
+} from "../utils/api";
 
 import "../css/feedcard.scss";
+import { getIngredientsByRecipeId } from "./../utils/api";
+import { useHistory } from "react-router";
+import { useAuth } from "../utils/useAuth";
 
 const Details = ({ recipe, ingredients }) => {
   return (
     <div>
       <div className="ingredients-container">
-        <div className="card-title">Ingredients</div>
-        <div></div>
+        <div className="card-title ingredients-title">Ingredients</div>
+        <div>
+          <li>
+            {ingredients.map((item) => (
+              <ul>{item.name}</ul>
+            ))}
+          </li>
+        </div>
       </div>
       <div className="steps-container">
-        <div className="card-title">Steps</div>
-        <div className="steps"></div>
+        <div className="card-title steps-title">Steps</div>
+        <div className="steps">{recipe && recipe.steps}</div>
       </div>
     </div>
   );
@@ -30,50 +46,110 @@ const Details = ({ recipe, ingredients }) => {
  * in Details component
  */
 export default ({ post, viewDetails }) => {
-  let history = useHistory();
+  const history = useHistory();
+  const { user } = useAuth();
+
   const [expanded, setExpanded] = useState(false);
-  const [user, setUser] = useState();
+  const [userPosted, setUserPosted] = useState();
   const [recipe, setRecipe] = useState();
-  const [ingredients, setIngredients] = useState();
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     setUser(await getUser())
-  //   }
-
-  //   fetchData();
-  // }, [post])
+  const [ingredients, setIngredients] = useState([]);
+  const [numOfLikes, setNumOfLikes] = useState();
+  const [numOfComments, setNumOfComments] = useState();
+  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
-    if (!expanded || recipe) return;
+    async function fetchData() {
+      const post_id = post.post_id;
+
+      setNumOfLikes(await getNumOfLikesByPostId(post_id));
+      setNumOfComments(await getNumOfCommentsByPostId(post_id));
+    }
+
+    fetchData();
+  }, [post.post_id]);
+
+  useEffect(() => {
+    async function fetchData() {
+      setUserPosted(await getUserById(post.account_id));
+    }
+
+    fetchData();
+  }, [post.account_id]);
+
+  useEffect(() => {
+    if (!expanded || (recipe && ingredients)) return;
 
     async function fetchData() {
-      setRecipe(await getRecipe(post.recipe_id));
+      const recipe_id = post.recipe_id;
+
+      setRecipe(await getRecipe(recipe_id));
+      setIngredients((await getIngredientsByRecipeId(recipe_id)) || []);
     }
 
     fetchData();
   }, [expanded]);
 
-  const handlePostClick = () => history.push(`/post/${post.post_id}`);
+  const onLikeBtnClicked = async () => {
+    // TODO: use logged in account id
+    if (!user) return;
+
+    const user_id = user.account_id;
+    const { post_id } = post;
+
+    const newValue = !liked;
+    setLiked((prev) => !prev);
+
+    if (newValue) {
+      setNumOfLikes((prev) => prev + 1);
+      await likePost(user_id, post_id);
+    } else {
+      setNumOfLikes((prev) => prev - 1);
+      await unlikePost(user_id, post_id);
+    }
+  };
 
   return (
     <div className="card">
-      <div className="header">
-        <div className="user-info">
-          <Button className="user-icon" icon={<UserOutlined />} />
-          <div className="name">username</div>
+      {userPosted && (
+        <div className="header">
+          <div className="user-info">
+            <Button
+              className="user-icon"
+              onClick={() => history.push(`/profile/${userPosted.account_id}`)}
+            >
+              <Image
+                className="profile-pic"
+                preview={false}
+                src={userPosted.profile_picture}
+              />
+            </Button>
+          </div>
+          <div className="name">{userPosted.username}</div>
+          {viewDetails && (
+            <Button
+              onClick={() => history.push(`/post/${post.post_id}`)}
+              className="like-btn"
+              icon={<ArrowRightOutlined />}
+            />
+          )}
         </div>
-        {viewDetails && (
-          <Button
-            onClick={handlePostClick}
-            className="like-btn"
-            icon={<ArrowRightOutlined />}
-          />
-        )}
-      </div>
-      <Image className="card-img" src={post.description} />
+      )}
+      <Image className="card-img" src={post.description} preview={false} />
       <div>
-        <Button className="like-btn" icon={<HeartOutlined />} />
+        <div className="actions">
+          <div className="action">
+            <Button
+              className="logo-btn"
+              icon={<HeartOutlined />}
+              onClick={onLikeBtnClicked}
+            />
+            <div className="likes">{numOfLikes} likes</div>
+          </div>
+          <div className="action">
+            <Button className="logo-btn" icon={<MessageOutlined />} />
+            <div className="comments">{numOfComments} comments</div>
+          </div>
+        </div>
       </div>
       <Button className="details" onClick={() => setExpanded(!expanded)}>
         <div className="card-title-section">
