@@ -42,7 +42,7 @@ export default ({}) => {
   let accountId = user && user.account_id;
   accountId = accountId !== undefined ? accountId : params.account_id;
 
-  console.log(this.props.location.state.detail);
+//   console.log(this.props.location.state.detail);
 
   useEffect(() => {
     async function fetchData() {
