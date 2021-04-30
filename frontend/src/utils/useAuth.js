@@ -17,7 +17,7 @@ const useProvideAuth = () => {
 
   const wrappedLogin = async (username, password) => {
     const res = await login({ username, password });
-    setUser(res.data.success ? res.data.result : false);
+    setUser(res?.data.success ? res.data.result : false);
 
     return res;
   };

@@ -2,6 +2,11 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  .card {
+    height: 400px;
+    width: 200px;
+  }
 }
 
 .comment-input {

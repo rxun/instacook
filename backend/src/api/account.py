@@ -111,7 +111,7 @@ def get_user():
     username = request.args.get('username')
 
     conn = db.connect()
-    query = 'SELECT email, username FROM Account WHERE username LIKE "%%{}%%";'.format(
+    query = 'SELECT email, username, account_id FROM Account WHERE username LIKE "%%{}%%";'.format(
         username)
     query_results = conn.execute(query).fetchall()
     conn.close()
@@ -122,7 +122,8 @@ def get_user():
         for result in query_results:
             data[i] = {
                 "email": result[0],
-                "username": result[1]
+                "username": result[1],
+                "account_id": result[2]
             }
             i += 1
         return create_response(status=200, data=data)
