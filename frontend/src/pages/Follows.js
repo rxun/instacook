@@ -5,14 +5,14 @@ import FeedCard from "../components/FeedCard";
 
 import "../css/newfeed.scss";
 import { getFollowers, getFollowing } from "../utils/api";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
+import { useAuth } from "../utils/useAuth";
 
 const FollowCard = ({ user }) => {
   const history = useHistory();
   return (
     <div className="card">
       <div className="header">
-        {/* <div className="icon"></div> */}
         <Button
           className="user-icon"
           icon={
@@ -36,15 +36,20 @@ export default ({}) => {
   const [following, setFollowing] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [followView, setFollowView] = useState("following");
+  const { user } = useAuth();
+  const params = useParams();
+
+  let accountId = user && user.account_id;
+  accountId = accountId !== undefined ? accountId : params.account_id;
+
+  console.log(this.props.location.state.detail);
 
   useEffect(() => {
     async function fetchData() {
-      setFollowing(await getFollowing(0));
+      setFollowing(await getFollowing(accountId));
       //   console.log(following);
-      setFollowers(await getFollowers(0));
+      setFollowers(await getFollowers(accountId));
       console.log(followers);
-
-      //   TODO: fix the bug with followers page icon
     }
 
     fetchData();
