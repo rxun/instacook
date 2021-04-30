@@ -30,8 +30,9 @@ export default ({ searchText }) => {
 
   const fetchAccounts = async () => {
     const res = await getUser(searchInput);
-    const users = res.data.result;
     let data = [];
+    if (res) {
+    const users = res.data.result;
     for (const key in users) {
       const username = users[key].username;
       const account_id = users[key].account_id;
@@ -47,6 +48,7 @@ export default ({ searchText }) => {
         </div>
       );
     }
+  }
     setActiveDataSource(data);
   };
 
