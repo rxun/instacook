@@ -11,6 +11,7 @@ import {
   getAccountById,
   getFollow,
   follow,
+  getLikesForUser,
 } from "../utils/api";
 import { UserOutlined } from "@ant-design/icons";
 import {
@@ -83,6 +84,7 @@ const DefaultProfile = ({ accountId }) => {
       setNumFollowers(followers.length);
 
       // TODO: fetch # likes from other people
+      setNumLikes(await getLikesForUser(accountId));
     }
 
     fetchData();
@@ -99,6 +101,9 @@ const DefaultProfile = ({ accountId }) => {
     } else {
       await unfollow(user_id, accountId);
     }
+
+    const followers = await getFollowers(accountId);
+    setNumFollowers(followers.length);
   };
 
   return (

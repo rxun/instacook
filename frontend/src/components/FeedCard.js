@@ -106,6 +106,9 @@ export default ({ post, viewDetails, hideHeader }) => {
       setNumOfLikes((prev) => prev - 1);
       await unlikePost(user_id, post_id);
     }
+    const numLikes = await getNumOfLikesByPostId(post_id);
+    console.log(numLikes);
+    // setNumOfLikes(await getNumOfLikesByPostId(post_id));
   };
 
   return (
