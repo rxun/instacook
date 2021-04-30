@@ -2,7 +2,7 @@ import { Tabs, List, Button, Image } from "antd";
 import React, { useState, useEffect } from "react";
 
 import "../css/profile.scss";
-import { getPosts, getRecipes, getTopCommentors } from "../utils/api";
+import { getFollowing, getFollowers, getPosts, getRecipes, getTopCommentors } from "../utils/api";
 import { UserOutlined } from "@ant-design/icons";
 import {
   Switch,
@@ -55,6 +55,12 @@ const DefaultProfile = ({ accountId }) => {
     async function fetchData() {
       // TODO: fetch posts by account id
       // TODO: fetch # follows/followers
+      let following = await getFollowing(100);
+      setNumFollowing(following.length);
+
+      let followers = await getFollowers(100);
+      setNumFollowers(followers.length);
+
       // TODO: fetch # likes from other people
     }
 
