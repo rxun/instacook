@@ -16,7 +16,7 @@ def get_following_by_id(id):
     conn.close()
 
     results = [dict(obj) for obj in query_results]
-    # print(results)
+    print(results)
     return create_response(data={'result': results})
 
 

@@ -11,6 +11,7 @@ import {
   getAccountById,
   getFollow,
   follow,
+  getUserById,
   getLikesForUser,
 } from "../utils/api";
 import { UserOutlined } from "@ant-design/icons";
@@ -59,6 +60,7 @@ const PersonalProfile = () => {
 const DefaultProfile = ({ accountId }) => {
   const { user } = useAuth();
   const params = useParams();
+  const history = useHistory();
 
   accountId = accountId !== undefined ? accountId : params.account_id;
 
@@ -71,8 +73,8 @@ const DefaultProfile = ({ accountId }) => {
 
   useEffect(() => {
     async function fetchData() {
-      setAccount(await getAccountById(accountId));
-      setPosts(await getPostsByAccount(accountId));
+      setAccount(await getUserById(user.account_id));
+      setPosts(await getPostsByAccount(user.account_id));
 
       const followRes = await getFollow(user.account_id, accountId);
       setIsFollowing(followRes.length === 1);
@@ -126,8 +128,8 @@ const DefaultProfile = ({ accountId }) => {
           )}
         </div>
         <div className="user-stats">
-          <div>{numFollowers} followers</div>
-          <div>{numFollowing} following</div>
+          <Button onClick={() => history.push(`/follows`)}>{numFollowers} followers</Button>
+          <Button onClick={() => history.push(`/follows`)}>{numFollowing} following</Button>
           <div>{numLikes} likes</div>
         </div>
       </div>
