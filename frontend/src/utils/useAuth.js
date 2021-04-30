@@ -24,5 +24,5 @@ const useProvideAuth = () => {
 
   const logout = async () => setUser(false);
 
-  return { user, login: wrappedLogin, logout };
+  return { user, setUser, login: wrappedLogin, logout };
 };
