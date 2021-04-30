@@ -43,7 +43,7 @@ const App = () => {
               <Route exact path="/comments" component={CreateComment} />
               <Route exact path="/settings" component={Settings} />
               <Route exact path="/newfeed" component={NewFeed} />
-              <Route exact path="/profile" component={Profile} />
+              <Route path="/profile" component={Profile} />
               <Route exact path="/search" component={Search} />
               <Route exact path="/post/:id" component={PostDetails} />
               <Route exact path="/follows" component={Follows} />

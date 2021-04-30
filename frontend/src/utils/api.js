@@ -204,3 +204,16 @@ export const likePost = async (account_id, post_id) =>
 
 export const unlikePost = async (account_id, post_id) =>
   await del(`/likes/`, { account_id, post_id });
+
+export const getAccountById = async (account_id) =>
+  get(`/account/${account_id}`).then((res) => res.result.result[0]);
+
+export const follow = async (account1_id, account2_id) =>
+  await post("/follows/", { account1_id, account2_id });
+
+export const unfollow = async (account1_id, account2_id) =>
+  await del("/follows/", { account1_id, account2_id });
+
+export const getFollow = async (account1_id, account2_id) =>
+  await get("/follows/", { account1_id, account2_id }).then(res => res.result.result)
+

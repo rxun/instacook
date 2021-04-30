@@ -3,7 +3,12 @@
 .profile {
   padding-top: 1em;
 
-  .user-info {
+  .profile-pic {
+    height: 64px;
+    width: 64px;
+  }
+
+  .profile-user-info {
     margin-bottom: 1.5em;
   }
 

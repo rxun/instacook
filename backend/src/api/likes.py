@@ -19,7 +19,6 @@ def create_like():
     max_id = conn.execute(
         f'SELECT MAX(like_id) FROM Likes;').fetchall()
     new_id = max_id[0][0] + 1
-    print(f'{account_id} {post_id} {new_id}')
     conn.execute(
         f'INSERT INTO Likes VALUES({new_id}, {account_id}, {post_id});')
     conn.close()

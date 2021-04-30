@@ -41,7 +41,7 @@ def update_comment():
     req = request.get_json()
     commentId = req.get('commentId')
     text = req.get('text')
-    print(req)
+
     try:
         conn = db.connect()
         query = 'UPDATE Comment SET text="{}" WHERE comment_id={};'.format(text, commentId)
